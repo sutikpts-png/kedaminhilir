@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { supabase } from '@/lib/supabase';
 
 export default function LoginPage() {
   const [username, setUsername] = useState('');
@@ -16,12 +17,29 @@ export default function LoginPage() {
     setLoading(true);
     setErrorMsg('');
 
-    // Hardcoded auth as requested by user
-    if (username === 'admin' && password === 'admin123') {
-      localStorage.setItem('admin_auth', 'true');
-      router.push('/admin');
-    } else {
-      setErrorMsg('Login gagal. Periksa kembali Username dan Password Anda.');
+    try {
+      const { data, error } = await supabase
+        .from('pengaturan_web')
+        .select('admin_username, admin_password')
+        .eq('id', 1)
+        .single();
+
+      if (error) throw error;
+
+      // Check against DB credentials or fallback to default if DB returns null/undefined
+      const validUsername = data?.admin_username || 'admin';
+      const validPassword = data?.admin_password || 'admin123';
+
+      if (username === validUsername && password === validPassword) {
+        localStorage.setItem('admin_auth', 'true');
+        router.push('/admin');
+      } else {
+        setErrorMsg('Login gagal. Periksa kembali Username dan Password Anda.');
+        setLoading(false);
+      }
+    } catch (err: any) {
+      console.error(err);
+      setErrorMsg('Terjadi kesalahan sistem saat login.');
       setLoading(false);
     }
   };

@@ -29,7 +29,9 @@ export default function PengaturanWeb() {
     stat_penduduk: '',
     stat_kk: '',
     stat_dusun: '',
-    stat_luas: ''
+    stat_luas: '',
+    admin_username: '',
+    admin_password: ''
   });
 
   useEffect(() => {
@@ -59,6 +61,12 @@ export default function PengaturanWeb() {
           setHeroImages([data.hero_image_url]);
         }
       }
+
+      // Pastikan ada nilai default agar form input tidak null (uncontrolled component)
+      if (!data.admin_username) data.admin_username = 'admin';
+      if (!data.admin_password) data.admin_password = 'admin123';
+      
+      setFormData(data);
 
       if (data.tautan_cepat) {
         setTautanCepat(typeof data.tautan_cepat === 'string' ? JSON.parse(data.tautan_cepat) : data.tautan_cepat);
@@ -369,6 +377,26 @@ export default function PengaturanWeb() {
             {tautanCepat.length === 0 && (
               <p className="text-sm text-gray-500 italic text-center py-4">Belum ada tautan cepat. Klik "+ Tambah Tautan" untuk menambahkan.</p>
             )}
+          </div>
+        </div>
+
+        {/* AKUN ADMIN */}
+        <div className="bg-white rounded-xl shadow-sm border border-red-200 p-6 relative overflow-hidden">
+          <div className="absolute top-0 right-0 bg-red-100 text-red-600 px-3 py-1 rounded-bl-lg text-xs font-bold uppercase tracking-wider shadow-sm">
+            Area Sensitif
+          </div>
+          <h2 className="text-lg font-bold text-red-800 mb-4 border-b border-red-100 pb-2">Pengaturan Akun Admin</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">Username Admin</label>
+              <input type="text" name="admin_username" required value={formData.admin_username} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 outline-none" />
+              <p className="text-xs text-gray-500 mt-1">Digunakan untuk login ke panel admin.</p>
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">Password Admin</label>
+              <input type="text" name="admin_password" required value={formData.admin_password} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 outline-none" />
+              <p className="text-xs text-gray-500 mt-1">Disarankan menggunakan kombinasi yang kuat dan unik.</p>
+            </div>
           </div>
         </div>
 
