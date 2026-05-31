@@ -1,12 +1,14 @@
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 
+export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 export default async function KontakPage() {
-  const { data: kontak } = await supabase
-    .from('kontak')
+  const { data: web } = await supabase
+    .from('pengaturan_web')
     .select('*')
+    .eq('id', 1)
     .single();
 
   return (
@@ -41,7 +43,7 @@ export default async function KontakPage() {
                 </div>
                 <div>
                   <h4 className="font-bold text-gray-900">Alamat Kantor</h4>
-                  <p className="text-gray-600 text-sm mt-1">{kontak?.alamat || 'Jl. Kaliurang Km. 17, Kedamin Hilir, Pakem, Sleman 55582'}</p>
+                  <p className="text-gray-600 text-sm mt-1">{web?.alamat || 'Jl. Kaliurang Km. 17, Kedamin Hilir, Pakem, Sleman 55582'}</p>
                 </div>
               </div>
               
@@ -51,7 +53,7 @@ export default async function KontakPage() {
                 </div>
                 <div>
                   <h4 className="font-bold text-gray-900">Telepon</h4>
-                  <p className="text-gray-600 text-sm mt-1">{kontak?.telepon || '(0274) 895123'}</p>
+                  <p className="text-gray-600 text-sm mt-1">{web?.telepon || '(0274) 895123'}</p>
                 </div>
               </div>
               
@@ -61,7 +63,7 @@ export default async function KontakPage() {
                 </div>
                 <div>
                   <h4 className="font-bold text-gray-900">Email</h4>
-                  <p className="text-gray-600 text-sm mt-1">{kontak?.email || 'kedaminhilir@slemankab.go.id'}</p>
+                  <p className="text-gray-600 text-sm mt-1">{web?.email || 'kedaminhilir@slemankab.go.id'}</p>
                 </div>
               </div>
               
@@ -71,7 +73,7 @@ export default async function KontakPage() {
                 </div>
                 <div>
                   <h4 className="font-bold text-gray-900">Jam Layanan</h4>
-                  <p className="text-gray-600 text-sm mt-1">Senin - Jumat: 08:00 - 15:00 WIB<br/>Sabtu - Minggu: Tutup</p>
+                  <p className="text-gray-600 text-sm mt-1">{web?.jam_operasional || 'Senin - Jumat: 08:00 - 15:00 WIB'}</p>
                 </div>
               </div>
             </div>
@@ -79,13 +81,13 @@ export default async function KontakPage() {
             <div className="pt-6 border-t border-gray-100">
               <h4 className="font-bold text-gray-900 mb-4">Media Sosial</h4>
               <div className="flex gap-3">
-                <a href={kontak?.facebook || '#'} className="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center hover:bg-blue-700 transition">
+                <a href={web?.link_facebook || '#'} className="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center hover:bg-blue-700 transition">
                   <i className="fab fa-facebook-f"></i>
                 </a>
-                <a href={kontak?.instagram || '#'} className="w-10 h-10 bg-pink-600 text-white rounded-full flex items-center justify-center hover:bg-pink-700 transition">
+                <a href={web?.link_instagram || '#'} className="w-10 h-10 bg-pink-600 text-white rounded-full flex items-center justify-center hover:bg-pink-700 transition">
                   <i className="fab fa-instagram"></i>
                 </a>
-                <a href={kontak?.youtube || '#'} className="w-10 h-10 bg-red-600 text-white rounded-full flex items-center justify-center hover:bg-red-700 transition">
+                <a href={web?.link_youtube || '#'} className="w-10 h-10 bg-red-600 text-white rounded-full flex items-center justify-center hover:bg-red-700 transition">
                   <i className="fab fa-youtube"></i>
                 </a>
               </div>
@@ -136,7 +138,7 @@ export default async function KontakPage() {
       {/* Peta */}
       <section className="h-96 w-full">
         <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3952.0!2d110.42!3d-7.65!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zN8KwMzknMDAuMCJTIDExMMKwMjUnMTIuMCJF!5e0!3m2!1sid!2sid!4v1"
+          src={web?.gmaps_iframe || "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3952.0!2d110.42!3d-7.65!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zN8KwMzknMDAuMCJTIDExMMKwMjUnMTIuMCJF!5e0!3m2!1sid!2sid!4v1"}
           width="100%" height="100%" style={{ border: 0 }} allowFullScreen loading="lazy"
         ></iframe>
       </section>
