@@ -26,27 +26,48 @@ export default function TambahGaleri() {
 
     let finalGambarUrl = formData.gambar_url;
 
-    if (file) {
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
-      const { error: uploadError } = await supabase.storage
-        .from('gambar')
-        .upload(fileName, file);
+    if (formData.kategori === 'Foto') {
+      if (file) {
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+        const { error: uploadError } = await supabase.storage
+          .from('gambar')
+          .upload(fileName, file);
 
-      if (uploadError) {
-        alert('Gagal mengupload file: ' + uploadError.message + '\n\nPastikan bucket "gambar" sudah dibuat dan public di Supabase!');
+        if (uploadError) {
+          alert('Gagal mengupload file: ' + uploadError.message + '\n\nPastikan bucket "gambar" sudah dibuat dan public di Supabase!');
+          setLoading(false);
+          return;
+        }
+
+        const { data } = supabase.storage.from('gambar').getPublicUrl(fileName);
+        finalGambarUrl = data.publicUrl;
+      } else {
+        alert('Harap pilih file (Foto) terlebih dahulu!');
         setLoading(false);
         return;
       }
+    } else {
+      if (file) {
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+        const { error: uploadError } = await supabase.storage
+          .from('gambar')
+          .upload(fileName, file);
 
-      const { data } = supabase.storage.from('gambar').getPublicUrl(fileName);
-      finalGambarUrl = data.publicUrl;
-    }
+        if (uploadError) {
+          alert('Gagal mengupload file video: ' + uploadError.message);
+          setLoading(false);
+          return;
+        }
 
-    if (!finalGambarUrl) {
-      alert('Harap pilih file (Foto/Video) terlebih dahulu!');
-      setLoading(false);
-      return;
+        const { data } = supabase.storage.from('gambar').getPublicUrl(fileName);
+        finalGambarUrl = data.publicUrl;
+      } else if (!finalGambarUrl) {
+        alert('Harap pilih File Video ATAU masukkan URL YouTube!');
+        setLoading(false);
+        return;
+      }
     }
 
     const { error } = await supabase.from('galeri').insert([{ ...formData, gambar_url: finalGambarUrl }]);
@@ -90,20 +111,58 @@ export default function TambahGaleri() {
               <option value="Video">Video</option>
             </select>
           </div>
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1">File Media * (Gambar atau Video)</label>
-            <input 
-              type="file" accept="image/*,video/*" required
-              onChange={(e) => {
-                if (e.target.files && e.target.files.length > 0) {
-                  setFile(e.target.files[0]);
-                } else {
-                  setFile(null);
-                }
-              }}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100" 
-            />
-          </div>
+          {formData.kategori === 'Foto' ? (
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">File Foto *</label>
+              <input 
+                type="file" accept="image/*" required
+                onChange={(e) => {
+                  if (e.target.files && e.target.files.length > 0) {
+                    setFile(e.target.files[0]);
+                  } else {
+                    setFile(null);
+                  }
+                }}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100" 
+              />
+            </div>
+          ) : (
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1">File Video (Opsional jika pakai URL YouTube)</label>
+                <input 
+                  type="file" accept="video/*"
+                  onChange={(e) => {
+                    if (e.target.files && e.target.files.length > 0) {
+                      setFile(e.target.files[0]);
+                    } else {
+                      setFile(null);
+                    }
+                  }}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100" 
+                />
+              </div>
+              <div className="text-center text-sm font-bold text-gray-500">ATAU</div>
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1">URL YouTube (Opsional jika upload file Video)</label>
+                <input 
+                  type="url" name="gambar_url"
+                  value={formData.gambar_url} onChange={handleChange}
+                  placeholder="https://www.youtube.com/watch?v=..."
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none" 
+                />
+                {formData.gambar_url && (formData.gambar_url.includes('youtube.com') || formData.gambar_url.includes('youtu.be')) && (
+                  <div className="mt-2">
+                    <iframe 
+                      className="w-full aspect-video rounded border" 
+                      src={formData.gambar_url.includes('youtu.be') ? formData.gambar_url.replace('youtu.be/', 'youtube.com/embed/') : formData.gambar_url.replace('watch?v=', 'embed/')} 
+                      allowFullScreen>
+                    </iframe>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-1">Deskripsi Singkat</label>
             <textarea 

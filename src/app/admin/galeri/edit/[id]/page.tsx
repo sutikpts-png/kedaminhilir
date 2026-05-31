@@ -45,22 +45,44 @@ export default function EditGaleri() {
 
     let finalGambarUrl = formData.gambar_url;
 
-    if (file) {
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
-      const { error: uploadError } = await supabase.storage.from('gambar').upload(fileName, file);
+    if (formData.kategori === 'Foto') {
+      if (file) {
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+        const { error: uploadError } = await supabase.storage.from('gambar').upload(fileName, file);
 
-      if (uploadError) {
-        alert('Gagal mengupload file: ' + uploadError.message);
+        if (uploadError) {
+          alert('Gagal mengupload file: ' + uploadError.message);
+          setLoading(false);
+          return;
+        }
+
+        const { data } = supabase.storage.from('gambar').getPublicUrl(fileName);
+        finalGambarUrl = data.publicUrl;
+      }
+    } else {
+      if (file) {
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+        const { error: uploadError } = await supabase.storage.from('gambar').upload(fileName, file);
+
+        if (uploadError) {
+          alert('Gagal mengupload file video: ' + uploadError.message);
+          setLoading(false);
+          return;
+        }
+
+        const { data } = supabase.storage.from('gambar').getPublicUrl(fileName);
+        finalGambarUrl = data.publicUrl;
+      }
+      if (!finalGambarUrl) {
+        alert('File Video ATAU URL YouTube wajib ada!');
         setLoading(false);
         return;
       }
-
-      const { data } = supabase.storage.from('gambar').getPublicUrl(fileName);
-      finalGambarUrl = data.publicUrl;
     }
 
-    if (!finalGambarUrl) {
+    if (!finalGambarUrl && formData.kategori === 'Foto') {
       alert('File Media wajib ada!');
       setLoading(false);
       return;
@@ -109,26 +131,62 @@ export default function EditGaleri() {
               <option value="Video">Video</option>
             </select>
           </div>
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1">File Media * (Biarkan kosong jika tidak diubah)</label>
-            {formData.gambar_url && (
-              <div className="mb-2">
-                {formData.kategori === 'Video' || formData.gambar_url.match(/\.(mp4|webm|ogg)$/i) ? (
-                  <video src={formData.gambar_url} controls className="h-32 rounded border bg-black"></video>
-                ) : (
+          {formData.kategori === 'Foto' ? (
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">File Foto (Biarkan kosong jika tidak diubah)</label>
+              {formData.gambar_url && formData.kategori === 'Foto' && (
+                <div className="mb-2">
                   <img src={formData.gambar_url} alt="Preview" className="h-20 rounded border object-cover" />
+                </div>
+              )}
+              <input 
+                type="file" accept="image/*"
+                onChange={(e) => {
+                  if (e.target.files && e.target.files.length > 0) setFile(e.target.files[0]);
+                  else setFile(null);
+                }}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100" 
+              />
+            </div>
+          ) : (
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1">File Video (Opsional, biarkan kosong jika tidak diubah atau menggunakan URL)</label>
+                {formData.gambar_url && formData.kategori === 'Video' && formData.gambar_url.match(/\.(mp4|webm|ogg)$/i) && (
+                  <div className="mb-2">
+                    <video src={formData.gambar_url} controls className="h-32 rounded border bg-black"></video>
+                  </div>
+                )}
+                <input 
+                  type="file" accept="video/*"
+                  onChange={(e) => {
+                    if (e.target.files && e.target.files.length > 0) setFile(e.target.files[0]);
+                    else setFile(null);
+                  }}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100" 
+                />
+              </div>
+              <div className="text-center text-sm font-bold text-gray-500">ATAU</div>
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1">URL YouTube (Opsional, hapus jika menggunakan file Video)</label>
+                <input 
+                  type="url" name="gambar_url"
+                  value={formData.gambar_url} onChange={handleChange}
+                  placeholder="https://www.youtube.com/watch?v=..."
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none" 
+                />
+                {formData.gambar_url && (formData.gambar_url.includes('youtube.com') || formData.gambar_url.includes('youtu.be')) && (
+                  <div className="mt-2">
+                    <iframe 
+                      className="w-full aspect-video rounded border" 
+                      src={formData.gambar_url.includes('youtu.be') ? formData.gambar_url.replace('youtu.be/', 'youtube.com/embed/') : formData.gambar_url.replace('watch?v=', 'embed/')} 
+                      allowFullScreen>
+                    </iframe>
+                  </div>
                 )}
               </div>
-            )}
-            <input 
-              type="file" accept="image/*,video/*"
-              onChange={(e) => {
-                if (e.target.files && e.target.files.length > 0) setFile(e.target.files[0]);
-                else setFile(null);
-              }}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100" 
-            />
-          </div>
+            </div>
+          )}
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-1">Deskripsi Singkat</label>
             <textarea 

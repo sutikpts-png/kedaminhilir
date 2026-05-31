@@ -6,6 +6,8 @@ export const revalidate = 0;
 export default async function Home() {
   const { data: web } = await supabase.from('pengaturan_web').select('*').eq('id', 1).single();
   const { data: latestBerita } = await supabase.from('berita').select('*').order('tanggal_publikasi', { ascending: false }).limit(3);
+  const { data: latestFoto } = await supabase.from('galeri').select('*').eq('kategori', 'Foto').order('tanggal', { ascending: false }).limit(4);
+  const { data: latestVideo } = await supabase.from('galeri').select('*').eq('kategori', 'Video').order('tanggal', { ascending: false }).limit(2);
 
   const heroBg = web?.hero_image_url || '/assets/img/hero-bg.jpg';
   const heroTitle = web?.hero_title || 'Selamat Datang di<br/><span class="text-yellow-300">Kelurahan Kedamin Hilir</span>';
@@ -101,6 +103,72 @@ export default async function Home() {
         <div className="text-center mt-10">
           <Link href="/berita" className="inline-block px-6 py-3 bg-white border border-green-600 text-green-700 font-bold text-sm rounded-lg hover:bg-green-50 transition">
             Lihat Semua Berita
+          </Link>
+        </div>
+      </section>
+
+      {/* GALERI */}
+      <section className="max-w-7xl mx-auto px-4 py-16">
+        <div className="text-center max-w-xl mx-auto mb-12">
+          <h3 className="text-2xl font-bold text-green-900">Galeri Kelurahan</h3>
+          <p className="text-gray-500 text-sm mt-2">Dokumentasi kegiatan dan potensi Kelurahan Kedamin Hilir.</p>
+          <div className="w-16 h-1 bg-yellow-400 mx-auto mt-4 rounded-full"></div>
+        </div>
+        
+        <div className="mb-8">
+          <h4 className="text-xl font-bold text-green-800 mb-4 flex items-center"><i className="fas fa-camera mr-2 text-yellow-500"></i> Galeri Foto</h4>
+          {(!latestFoto || latestFoto.length === 0) ? (
+            <div className="text-center py-8 bg-gray-50 rounded-xl border border-gray-100">
+              <p className="text-sm text-gray-400">Belum ada foto.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {latestFoto.map((item) => (
+                <div key={item.id} className="relative group rounded-xl overflow-hidden shadow-sm aspect-square bg-gray-100">
+                  <img src={item.gambar_url} alt={item.judul} className="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-4">
+                    <p className="text-white text-sm font-semibold truncate">{item.judul}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div>
+          <h4 className="text-xl font-bold text-green-800 mb-4 flex items-center"><i className="fas fa-video mr-2 text-yellow-500"></i> Galeri Video</h4>
+          {(!latestVideo || latestVideo.length === 0) ? (
+            <div className="text-center py-8 bg-gray-50 rounded-xl border border-gray-100">
+              <p className="text-sm text-gray-400">Belum ada video.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {latestVideo.map((item) => (
+                <div key={item.id} className="rounded-xl overflow-hidden shadow-sm border border-gray-100 bg-white p-2">
+                  <div className="aspect-video bg-black rounded-lg overflow-hidden">
+                    {item.gambar_url.includes('youtube.com') || item.gambar_url.includes('youtu.be') ? (
+                      <iframe 
+                        className="w-full h-full" 
+                        src={item.gambar_url.includes('youtu.be') ? item.gambar_url.replace('youtu.be/', 'youtube.com/embed/') : item.gambar_url.replace('watch?v=', 'embed/')} 
+                        allowFullScreen>
+                      </iframe>
+                    ) : (
+                      <video src={item.gambar_url} controls className="w-full h-full object-contain"></video>
+                    )}
+                  </div>
+                  <div className="p-3">
+                    <p className="text-gray-900 font-bold text-sm truncate">{item.judul}</p>
+                    {item.deskripsi && <p className="text-gray-500 text-xs mt-1 line-clamp-2">{item.deskripsi}</p>}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+        
+        <div className="text-center mt-10">
+          <Link href="/galeri" className="inline-block px-6 py-3 bg-white border border-green-600 text-green-700 font-bold text-sm rounded-lg hover:bg-green-50 transition">
+            Lihat Semua Galeri
           </Link>
         </div>
       </section>
