@@ -1,4 +1,5 @@
 import { supabase } from '@/lib/supabase';
+import AdminVisitorFilter from '@/components/AdminVisitorFilter';
 
 export const revalidate = 0;
 
@@ -161,7 +162,10 @@ export default async function AdminDashboard() {
         </div>
       </div>
 
-      <div className="bg-white p-8 rounded-xl border border-gray-200 shadow-sm text-center">
+      {/* SECTION: TABEL RINCIAN PENGUNJUNG (FILTER) */}
+      <AdminVisitorFilter />
+
+      <div className="bg-white p-8 rounded-xl border border-gray-200 shadow-sm text-center mt-10">
         <i className="fas fa-cogs text-5xl text-gray-300 mb-4"></i>
         <h2 className="text-xl font-bold text-gray-800">Panel Pengelolaan Kelurahan</h2>
         <p className="text-gray-500 mt-2">
