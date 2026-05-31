@@ -1,17 +1,26 @@
 import Link from "next/link";
+import { supabase } from "@/lib/supabase";
 
-export default function Home() {
+export const revalidate = 0;
+
+export default async function Home() {
+  const { data: web } = await supabase.from('pengaturan_web').select('*').eq('id', 1).single();
+
+  const heroBg = web?.hero_image_url || '/assets/img/hero-bg.jpg';
+  const heroTitle = web?.hero_title || 'Selamat Datang di<br/><span class="text-yellow-300">Kelurahan Kedamin Hilir</span>';
+  const heroSubtitle = web?.hero_subtitle || 'Melayani masyarakat dengan tulus, transparan, dan profesional demi terwujudnya kelurahan yang maju, sejahtera, dan berdaya saing.';
+
   return (
     <>
       {/* HERO SECTION */}
       <section className="relative text-white py-20 px-4 overflow-hidden hero-bg">
-        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "url('/assets/img/hero-bg.jpg')", backgroundSize: 'cover', backgroundPosition: 'center' }}></div>
+        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: `url('${heroBg}')`, backgroundSize: 'cover', backgroundPosition: 'center' }}></div>
         <div className="absolute inset-0 bg-gradient-to-r from-green-900/80 to-teal-800/60"></div>
         <div className="max-w-7xl mx-auto relative z-10 grid grid-cols-1 md:grid-cols-2 items-center gap-10">
           <div className="space-y-6 fade-in">
             <span className="bg-yellow-400 text-yellow-900 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full">Pemerintahan Kelurahan</span>
-            <h2 className="text-3xl md:text-5xl font-extrabold leading-tight">Selamat Datang di<br/><span className="text-yellow-300">Kelurahan Kedamin Hilir</span></h2>
-            <p className="text-green-100 text-base md:text-lg max-w-xl">Melayani masyarakat dengan tulus, transparan, dan profesional demi terwujudnya kelurahan yang maju, sejahtera, dan berdaya saing.</p>
+            <h2 className="text-3xl md:text-5xl font-extrabold leading-tight" dangerouslySetInnerHTML={{ __html: heroTitle }}></h2>
+            <p className="text-green-100 text-base md:text-lg max-w-xl">{heroSubtitle}</p>
             <div className="flex flex-wrap gap-4">
               <Link href="/layanan" className="bg-yellow-400 hover:bg-yellow-300 text-yellow-900 font-bold px-6 py-3 rounded-lg shadow-lg transition transform hover:-translate-y-0.5">
                 <i className="fas fa-concierge-bell mr-2"></i>Layanan Warga

@@ -1,10 +1,28 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { supabase } from '@/lib/supabase';
 
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [web, setWeb] = useState<any>({
+    telepon: '(0274) 895123',
+    email: 'kedaminhilir@slemankab.go.id',
+    nama_kelurahan: 'Kedamin Hilir',
+    nama_kecamatan_kabupaten: 'Kecamatan Pakem · Kabupaten Sleman · DIY',
+    link_facebook: '#',
+    link_instagram: '#',
+    link_youtube: '#'
+  });
+
+  useEffect(() => {
+    async function fetchWeb() {
+      const { data } = await supabase.from('pengaturan_web').select('*').eq('id', 1).single();
+      if (data) setWeb(data);
+    }
+    fetchWeb();
+  }, []);
 
   return (
     <>
@@ -12,13 +30,13 @@ export default function Navbar() {
       <div className="bg-green-900 text-white text-xs py-2 px-4 shadow-inner">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
           <div className="flex items-center gap-4">
-            <span><i className="fas fa-phone mr-1 text-green-300"></i> (0274) 895123</span>
-            <span><i className="fas fa-envelope mr-1 text-green-300"></i> kedaminhilir@slemankab.go.id</span>
+            <span><i className="fas fa-phone mr-1 text-green-300"></i> {web.telepon}</span>
+            <span><i className="fas fa-envelope mr-1 text-green-300"></i> {web.email}</span>
           </div>
           <div className="flex items-center gap-4">
-            <Link href="#" className="hover:text-green-300 transition"><i className="fab fa-facebook"></i></Link>
-            <Link href="#" className="hover:text-green-300 transition"><i className="fab fa-instagram"></i></Link>
-            <Link href="#" className="hover:text-green-300 transition"><i className="fab fa-youtube"></i></Link>
+            {web.link_facebook !== '#' && web.link_facebook !== '' && <Link href={web.link_facebook} target="_blank" className="hover:text-green-300 transition"><i className="fab fa-facebook"></i></Link>}
+            {web.link_instagram !== '#' && web.link_instagram !== '' && <Link href={web.link_instagram} target="_blank" className="hover:text-green-300 transition"><i className="fab fa-instagram"></i></Link>}
+            {web.link_youtube !== '#' && web.link_youtube !== '' && <Link href={web.link_youtube} target="_blank" className="hover:text-green-300 transition"><i className="fab fa-youtube"></i></Link>}
             <span className="border-l border-green-700 pl-4 text-green-200">
               {new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
             </span>
@@ -34,8 +52,8 @@ export default function Navbar() {
               KEDAMIN<br/>HILIR
             </div>
             <div>
-              <h1 className="text-base font-bold text-green-900 uppercase tracking-tight leading-tight">Kelurahan Kedamin Hilir</h1>
-              <p className="text-xs text-gray-500 font-medium">Kecamatan Pakem · Kabupaten Sleman · DIY</p>
+              <h1 className="text-base font-bold text-green-900 uppercase tracking-tight leading-tight">Kelurahan {web.nama_kelurahan}</h1>
+              <p className="text-xs text-gray-500 font-medium">{web.nama_kecamatan_kabupaten}</p>
             </div>
           </div>
           

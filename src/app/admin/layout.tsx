@@ -64,6 +64,9 @@ export default function AdminLayout({
           <Link href="/admin/kontak" className="block px-4 py-2 rounded hover:bg-green-800 transition">
             <i className="fas fa-address-book w-6"></i> Kontak
           </Link>
+          <Link href="/admin/pengaturan" className="block px-4 py-2 rounded hover:bg-green-800 transition mt-4 bg-green-800/50">
+            <i className="fas fa-cog w-6"></i> Pengaturan Web
+          </Link>
         </nav>
         <div className="p-4 border-t border-green-800">
           <Link href="/" className="block px-4 py-2 text-sm text-green-200 hover:text-white transition">
