@@ -33,7 +33,7 @@ export default async function Home() {
       {/* HERO SECTION */}
       <section className="relative text-white py-20 px-4 overflow-hidden bg-green-900">
         <HeroSlider images={heroBgArr} />
-        <div className="absolute inset-0 bg-gradient-to-r from-green-900/75 via-green-900/60 to-teal-800/50 z-0"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-green-900 via-green-900 to-teal-800 opacity-[0.67] z-0"></div>
         <div className="max-w-7xl mx-auto relative z-10 grid grid-cols-1 md:grid-cols-2 items-center gap-10">
           <div className="space-y-6 fade-in drop-shadow-md">
             <span className="bg-yellow-400 text-yellow-900 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow-sm">Pemerintahan Kelurahan</span>
