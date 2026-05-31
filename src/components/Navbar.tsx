@@ -4,6 +4,20 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 
+const NavLink = ({ item, className }: { item: any, className: string }) => {
+  let url = item.link ? item.link.trim() : '#';
+  const isExternal = !url.startsWith('/') && !url.startsWith('#');
+  
+  if (isExternal && !url.startsWith('http')) {
+    url = `https://${url}`;
+  }
+  
+  if (isExternal) {
+    return <a href={url} target="_blank" rel="noopener noreferrer" className={className}>{item.nama}</a>;
+  }
+  return <Link href={url} className={className}>{item.nama}</Link>;
+};
+
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [menus, setMenus] = useState<any[]>([]);
@@ -104,16 +118,12 @@ export default function Navbar() {
                     </button>
                     <div className="absolute left-0 mt-1 hidden group-hover:block bg-white border border-gray-200 shadow-lg rounded py-2 w-48 z-50">
                       {menu.children.map((child: any) => (
-                        <Link key={child.id} href={child.link} className="block px-4 py-2 text-gray-700 hover:bg-green-50 hover:text-green-700 text-xs">
-                          {child.nama}
-                        </Link>
+                        <NavLink key={child.id} item={child} className="block px-4 py-2 text-gray-700 hover:bg-green-50 hover:text-green-700 text-xs" />
                       ))}
                     </div>
                   </div>
                 ) : (
-                  <Link key={menu.id} href={menu.link} className="px-3 py-2 hover:text-green-600 transition">
-                    {menu.nama}
-                  </Link>
+                  <NavLink key={menu.id} item={menu} className="px-3 py-2 hover:text-green-600 transition" />
                 )
               ))
             )}
@@ -133,16 +143,14 @@ export default function Navbar() {
                       <span className="block text-gray-900 font-bold text-sm mb-2">{menu.nama}</span>
                       <div className="pl-4 border-l-2 border-green-200 space-y-2">
                         {menu.children.map((child: any) => (
-                          <Link key={child.id} href={child.link} className="block text-gray-600 hover:text-green-700 text-sm">
-                            {child.nama}
-                          </Link>
+                          <NavLink key={child.id} item={child} className="block text-gray-600 hover:text-green-700 text-sm" />
                         ))}
                       </div>
                     </div>
                   ) : (
-                    <Link href={menu.link} className="block py-2 text-gray-700 font-semibold text-sm">
-                      {menu.nama}
-                    </Link>
+                    <div className="py-2">
+                      <NavLink item={menu} className="text-gray-700 font-semibold text-sm block" />
+                    </div>
                   )}
                 </div>
               ))
