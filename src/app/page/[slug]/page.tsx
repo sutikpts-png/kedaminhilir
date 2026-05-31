@@ -4,11 +4,12 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
 // Fetch the page data directly in the server component
-export default async function CustomPage({ params }: { params: { slug: string } }) {
+export default async function CustomPage({ params }: { params: Promise<{ slug: string }> }) {
+  const resolvedParams = await params;
   const { data: halaman } = await supabase
     .from('halaman')
     .select('*')
-    .eq('slug', params.slug)
+    .eq('slug', resolvedParams.slug)
     .single();
 
   if (!halaman) {
