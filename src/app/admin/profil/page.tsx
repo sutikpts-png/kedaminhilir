@@ -9,6 +9,7 @@ export default function EditProfil() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState({ text: '', type: '' });
+  const [imageFile, setImageFile] = useState<File | null>(null);
   
   const [formData, setFormData] = useState({
     sejarah: '',
@@ -47,14 +48,35 @@ export default function EditProfil() {
     setSaving(true);
     setMessage({ text: '', type: '' });
 
+    let finalImageUrl = formData.struktur_organisasi_url;
+
+    if (imageFile) {
+      const fileExt = imageFile.name.split('.').pop();
+      const fileName = `struktur-${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+      const { error: uploadError } = await supabase.storage
+        .from('gambar')
+        .upload(fileName, imageFile);
+
+      if (uploadError) {
+        setMessage({ text: 'Gagal mengupload gambar: ' + uploadError.message, type: 'error' });
+        setSaving(false);
+        return;
+      }
+
+      const { data } = supabase.storage.from('gambar').getPublicUrl(fileName);
+      finalImageUrl = data.publicUrl;
+    }
+
+    const payload = { ...formData, struktur_organisasi_url: finalImageUrl };
+
     // Check if row exists
     const { data: existingData } = await supabase.from('profil').select('id').single();
 
     let result;
     if (existingData) {
-      result = await supabase.from('profil').update(formData).eq('id', existingData.id);
+      result = await supabase.from('profil').update(payload).eq('id', existingData.id);
     } else {
-      result = await supabase.from('profil').insert([formData]);
+      result = await supabase.from('profil').insert([payload]);
     }
 
     if (result.error) {
@@ -125,14 +147,22 @@ export default function EditProfil() {
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1">Link URL Gambar Struktur Organisasi (Opsional)</label>
-            <p className="text-xs text-gray-500 mb-2">Upload gambar struktur ke web luar (seperti Imgur) lalu paste linknya di sini.</p>
+            <label className="block text-sm font-semibold text-gray-700 mb-1">Gambar Struktur Organisasi</label>
+            {formData.struktur_organisasi_url && (
+              <div className="mb-2">
+                <img src={formData.struktur_organisasi_url} alt="Struktur Organisasi" className="max-h-48 rounded border border-gray-200" />
+              </div>
+            )}
             <input 
-              type="url" name="struktur_organisasi_url" 
-              value={formData.struktur_organisasi_url} onChange={handleChange}
-              placeholder="https://..."
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none" 
+              type="file" 
+              accept="image/*" 
+              onChange={(e) => {
+                if (e.target.files) setImageFile(e.target.files[0]);
+                else setImageFile(null);
+              }}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100" 
             />
+            <p className="text-xs text-gray-500 mt-2">Pilih gambar dari komputer Anda. Kosongkan jika tidak ingin mengubah gambar yang sudah ada.</p>
           </div>
 
           <div className="pt-4 flex gap-4">
