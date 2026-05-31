@@ -48,19 +48,19 @@ export default function VisitorCounter() {
     <ul className="text-xs space-y-3 text-gray-400">
       <li className="flex justify-between items-center border-b border-gray-800 pb-1">
         <span><i className="fas fa-users text-yellow-400 mr-2"></i> Hari Ini</span>
-        <span className="font-mono bg-gray-800 px-2 py-0.5 rounded text-white">{stats.harian.toLocaleString('id-ID')}</span>
+        <span className="font-mono bg-gray-800 px-2 py-0.5 rounded text-white">{(stats.harian || 0).toLocaleString('id-ID')}</span>
       </li>
       <li className="flex justify-between items-center border-b border-gray-800 pb-1">
         <span><i className="fas fa-calendar-week text-yellow-400 mr-2"></i> Minggu Ini</span>
-        <span className="font-mono bg-gray-800 px-2 py-0.5 rounded text-white">{stats.mingguan.toLocaleString('id-ID')}</span>
+        <span className="font-mono bg-gray-800 px-2 py-0.5 rounded text-white">{(stats.mingguan || 0).toLocaleString('id-ID')}</span>
       </li>
       <li className="flex justify-between items-center border-b border-gray-800 pb-1">
         <span><i className="fas fa-chart-line text-yellow-400 mr-2"></i> Bulan Ini</span>
-        <span className="font-mono bg-gray-800 px-2 py-0.5 rounded text-white">{stats.bulanan.toLocaleString('id-ID')}</span>
+        <span className="font-mono bg-gray-800 px-2 py-0.5 rounded text-white">{(stats.bulanan || 0).toLocaleString('id-ID')}</span>
       </li>
       <li className="flex justify-between items-center border-b border-gray-800 pb-1">
         <span><i className="fas fa-globe text-yellow-400 mr-2"></i> Total Tahun Ini</span>
-        <span className="font-mono bg-gray-800 px-2 py-0.5 rounded text-white">{stats.tahunan.toLocaleString('id-ID')}</span>
+        <span className="font-mono bg-gray-800 px-2 py-0.5 rounded text-white">{(stats.tahunan || 0).toLocaleString('id-ID')}</span>
       </li>
     </ul>
   );
