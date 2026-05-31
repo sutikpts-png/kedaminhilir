@@ -27,7 +27,7 @@ export default function TambahBerita() {
     const slug = formData.judul.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
 
     const { error } = await supabase.from('berita').insert([
-      { ...formData, slug, pembuat: 'Admin' }
+      { ...formData, slug }
     ]);
 
     setLoading(false);
