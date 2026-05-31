@@ -5,6 +5,8 @@ import { supabase } from '@/lib/supabase';
 
 export default function AdminVisitorFilter() {
   const [filter, setFilter] = useState('hari'); // 'hari', 'bulan', 'tahun'
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -28,6 +30,9 @@ export default function AdminVisitorFilter() {
       const grouped: Record<string, any> = {};
 
       rawStats.forEach((row) => {
+        if (startDate && row.tanggal < startDate) return;
+        if (endDate && row.tanggal > endDate) return;
+
         let key = row.tanggal; // YYYY-MM-DD
         let label = '';
 
@@ -59,7 +64,7 @@ export default function AdminVisitorFilter() {
       setLoading(false);
     }
     fetchData();
-  }, [filter]);
+  }, [filter, startDate, endDate]);
 
   // Helper untuk mendapatkan lebar progress bar (max 100%)
   const maxVisits = data.length > 0 ? Math.max(...data.map(d => d.jumlah)) : 1;
@@ -72,7 +77,31 @@ export default function AdminVisitorFilter() {
           <p className="text-xs text-gray-500">Lihat rincian data pengunjung website kelurahan.</p>
         </div>
         
-        <div className="bg-gray-100 p-1 rounded-lg inline-flex">
+        <div className="flex flex-col sm:flex-row gap-4 sm:items-center">
+          <div className="flex items-center gap-2 text-sm bg-gray-50 border border-gray-200 p-1.5 rounded-lg">
+            <span className="text-xs text-gray-500 pl-1">Dari:</span>
+            <input 
+              type="date" 
+              value={startDate} 
+              onChange={e => setStartDate(e.target.value)} 
+              className="bg-transparent border-none text-gray-700 text-xs focus:ring-0 cursor-pointer" 
+            />
+            <span className="text-gray-400">|</span>
+            <span className="text-xs text-gray-500">Sampai:</span>
+            <input 
+              type="date" 
+              value={endDate} 
+              onChange={e => setEndDate(e.target.value)} 
+              className="bg-transparent border-none text-gray-700 text-xs focus:ring-0 cursor-pointer" 
+            />
+            {(startDate || endDate) && (
+              <button onClick={() => { setStartDate(''); setEndDate(''); }} className="text-red-500 hover:text-red-700 p-1 rounded-md" title="Reset Rentang Tanggal">
+                <i className="fas fa-times-circle"></i>
+              </button>
+            )}
+          </div>
+
+          <div className="bg-gray-100 p-1 rounded-lg inline-flex">
           <button 
             onClick={() => setFilter('hari')}
             className={`px-4 py-2 text-sm font-semibold rounded-md transition ${filter === 'hari' ? 'bg-white shadow text-green-700' : 'text-gray-500 hover:text-gray-700'}`}
