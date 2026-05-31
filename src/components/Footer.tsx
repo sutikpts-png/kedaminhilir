@@ -78,13 +78,24 @@ export default async function Footer() {
           <div className="space-y-4">
             <h4 className="text-white font-bold text-base uppercase tracking-wide border-b border-gray-700 pb-2">Tautan Cepat</h4>
             <ul className="text-xs space-y-2 grid grid-cols-1 sm:grid-cols-2">
-              {tautanCepat.map((tautan: any, idx: number) => (
-                <li key={idx}>
-                  <Link href={tautan.url} className="hover:text-yellow-400 transition">
-                    <i className="fas fa-chevron-right text-[10px] mr-1"></i> {tautan.judul}
-                  </Link>
-                </li>
-              ))}
+              {tautanCepat.map((tautan: any, idx: number) => {
+                const isExternal = tautan.url.startsWith('http') || tautan.url.startsWith('www.');
+                const finalUrl = tautan.url.startsWith('www.') ? `https://${tautan.url}` : tautan.url;
+
+                return (
+                  <li key={idx}>
+                    {isExternal ? (
+                      <a href={finalUrl} target="_blank" rel="noopener noreferrer" className="hover:text-yellow-400 transition">
+                        <i className="fas fa-chevron-right text-[10px] mr-1"></i> {tautan.judul}
+                      </a>
+                    ) : (
+                      <Link href={finalUrl} className="hover:text-yellow-400 transition">
+                        <i className="fas fa-chevron-right text-[10px] mr-1"></i> {tautan.judul}
+                      </Link>
+                    )}
+                  </li>
+                );
+              })}
             </ul>
           </div>
           {/* Peta */}
