@@ -23,7 +23,11 @@ export default function PengaturanWeb() {
     link_instagram: '',
     link_youtube: '',
     link_gmaps: '',
-    gmaps_iframe: ''
+    gmaps_iframe: '',
+    stat_penduduk: '',
+    stat_kk: '',
+    stat_dusun: '',
+    stat_luas: ''
   });
 
   useEffect(() => {
@@ -147,6 +151,28 @@ export default function PengaturanWeb() {
             )}
             <input type="file" accept="image/*" onChange={(e) => { if (e.target.files) setLogoFile(e.target.files[0]); else setLogoFile(null); }} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100" />
             <p className="text-xs text-gray-500 mt-1">Biarkan kosong jika tidak ingin mengubah logo saat ini.</p>
+          </div>
+        </div>
+        {/* DATA STATISTIK KELURAHAN */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <h2 className="text-lg font-bold text-green-800 mb-4 border-b pb-2">Data Statistik Kelurahan (Untuk Halaman Utama)</h2>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">Jumlah Penduduk</label>
+              <input type="text" name="stat_penduduk" value={formData.stat_penduduk} onChange={handleChange} placeholder="Contoh: 12.450" className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none" />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">Kepala Keluarga</label>
+              <input type="text" name="stat_kk" value={formData.stat_kk} onChange={handleChange} placeholder="Contoh: 3.820" className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none" />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">Dusun / RW</label>
+              <input type="text" name="stat_dusun" value={formData.stat_dusun} onChange={handleChange} placeholder="Contoh: 12" className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none" />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">Luas Wilayah</label>
+              <input type="text" name="stat_luas" value={formData.stat_luas} onChange={handleChange} placeholder="Contoh: 8,4 km²" className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none" />
+            </div>
           </div>
         </div>
 

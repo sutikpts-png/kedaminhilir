@@ -35,22 +35,22 @@ export default async function Home() {
           <div className="grid grid-cols-2 gap-4">
             <div className="stat-card rounded-xl p-5 text-center border border-white/20">
               <i className="fas fa-users text-3xl text-yellow-300 mb-2"></i>
-              <div className="text-3xl font-extrabold text-white">12.450</div>
+              <div className="text-3xl font-extrabold text-white">{web?.stat_penduduk || '12.450'}</div>
               <div className="text-xs text-green-200 mt-1">Jumlah Penduduk</div>
             </div>
             <div className="stat-card rounded-xl p-5 text-center border border-white/20">
               <i className="fas fa-home text-3xl text-yellow-300 mb-2"></i>
-              <div className="text-3xl font-extrabold text-white">3.820</div>
+              <div className="text-3xl font-extrabold text-white">{web?.stat_kk || '3.820'}</div>
               <div className="text-xs text-green-200 mt-1">Kepala Keluarga</div>
             </div>
             <div className="stat-card rounded-xl p-5 text-center border border-white/20">
               <i className="fas fa-map-marked-alt text-3xl text-yellow-300 mb-2"></i>
-              <div className="text-3xl font-extrabold text-white">12</div>
+              <div className="text-3xl font-extrabold text-white">{web?.stat_dusun || '12'}</div>
               <div className="text-xs text-green-200 mt-1">Dusun / RW</div>
             </div>
             <div className="stat-card rounded-xl p-5 text-center border border-white/20">
               <i className="fas fa-road text-3xl text-yellow-300 mb-2"></i>
-              <div className="text-3xl font-extrabold text-white">8,4 km²</div>
+              <div className="text-3xl font-extrabold text-white">{web?.stat_luas || '8,4 km²'}</div>
               <div className="text-xs text-green-200 mt-1">Luas Wilayah</div>
             </div>
           </div>
