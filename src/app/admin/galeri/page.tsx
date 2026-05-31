@@ -52,12 +52,20 @@ export default function AdminGaleri() {
                   <p className="text-xs font-bold text-green-700 mb-1">{item.kategori}</p>
                   <p className="text-sm font-semibold text-gray-900 truncate">{item.judul}</p>
                 </div>
-                <button 
-                  onClick={() => hapusGaleri(item.id)}
-                  className="absolute top-2 right-2 bg-red-500 text-white w-8 h-8 rounded-full opacity-0 group-hover:opacity-100 transition shadow hover:bg-red-600 flex items-center justify-center"
-                >
-                  <i className="fas fa-trash text-xs"></i>
-                </button>
+                <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition">
+                  <Link 
+                    href={`/admin/galeri/edit/${item.id}`}
+                    className="bg-blue-500 text-white w-8 h-8 rounded-full shadow hover:bg-blue-600 flex items-center justify-center"
+                  >
+                    <i className="fas fa-edit text-xs"></i>
+                  </Link>
+                  <button 
+                    onClick={() => hapusGaleri(item.id)}
+                    className="bg-red-500 text-white w-8 h-8 rounded-full shadow hover:bg-red-600 flex items-center justify-center"
+                  >
+                    <i className="fas fa-trash text-xs"></i>
+                  </button>
+                </div>
               </div>
             ))}
           </div>

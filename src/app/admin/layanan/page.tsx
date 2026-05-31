@@ -61,6 +61,9 @@ export default function AdminLayanan() {
                     <td className="p-4 text-sm font-medium text-gray-900">{item.nama_layanan}</td>
                     <td className="p-4 text-sm text-gray-500 truncate max-w-xs">{item.deskripsi}</td>
                     <td className="p-4 text-right">
+                      <Link href={`/admin/layanan/edit/${item.id}`} className="text-blue-500 hover:text-blue-700 p-2 mr-2">
+                        <i className="fas fa-edit"></i>
+                      </Link>
                       <button onClick={() => hapusLayanan(item.id)} className="text-red-500 hover:text-red-700 p-2">
                         <i className="fas fa-trash"></i>
                       </button>

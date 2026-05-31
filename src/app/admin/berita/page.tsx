@@ -63,6 +63,9 @@ export default function AdminBerita() {
                     <td className="p-4 text-sm text-gray-500">{item.kategori}</td>
                     <td className="p-4 text-sm text-gray-500">{new Date(item.tanggal_publikasi).toLocaleDateString('id-ID')}</td>
                     <td className="p-4 text-right">
+                      <Link href={`/admin/berita/edit/${item.id}`} className="text-blue-500 hover:text-blue-700 p-2 mr-2">
+                        <i className="fas fa-edit"></i>
+                      </Link>
                       <button onClick={() => hapusBerita(item.id)} className="text-red-500 hover:text-red-700 p-2">
                         <i className="fas fa-trash"></i>
                       </button>
