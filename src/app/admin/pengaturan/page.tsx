@@ -8,6 +8,7 @@ export default function PengaturanWeb() {
   const [fetching, setFetching] = useState(true);
   const [heroFile, setHeroFile] = useState<File | null>(null);
   const [logoFile, setLogoFile] = useState<File | null>(null);
+  const [tautanCepat, setTautanCepat] = useState<{judul: string, url: string}[]>([]);
   const [formData, setFormData] = useState({
     telepon: '',
     email: '',
@@ -43,6 +44,20 @@ export default function PengaturanWeb() {
     
     if (data) {
       setFormData(data);
+      if (data.tautan_cepat) {
+        setTautanCepat(typeof data.tautan_cepat === 'string' ? JSON.parse(data.tautan_cepat) : data.tautan_cepat);
+      } else {
+        setTautanCepat([
+          { judul: 'Beranda', url: '/' },
+          { judul: 'Profil Kelurahan', url: '/profil' },
+          { judul: 'Berita', url: '/berita' },
+          { judul: 'Layanan', url: '/layanan' },
+          { judul: 'Potensi Desa', url: '/potensi' },
+          { judul: 'Galeri', url: '/galeri' },
+          { judul: 'Hubungi Kami', url: '/kontak' },
+          { judul: 'Pemkab Sleman', url: '#' }
+        ]);
+      }
     } else {
       console.error("Error fetching pengaturan:", error);
     }
@@ -96,9 +111,11 @@ export default function PengaturanWeb() {
       finalLogoUrl = data.publicUrl;
     }
 
+    const payload = { ...formData, hero_image_url: finalImageUrl, logo_url: finalLogoUrl, tautan_cepat: tautanCepat };
+    
     const { error } = await supabase
       .from('pengaturan_web')
-      .update({ ...formData, hero_image_url: finalImageUrl, logo_url: finalLogoUrl })
+      .update(payload)
       .eq('id', 1);
 
     setLoading(false);
@@ -237,6 +254,61 @@ export default function PengaturanWeb() {
               <input type="text" name="gmaps_iframe" required value={formData.gmaps_iframe} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none font-mono text-sm" />
               <p className="text-xs text-gray-500 mt-1">Copy isi dari atribut src="..." saat Anda meng-embed Google Maps.</p>
             </div>
+          </div>
+        </div>
+
+        {/* TAUTAN CEPAT */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div className="flex justify-between items-center border-b pb-2 mb-4">
+            <h2 className="text-lg font-bold text-green-800">Tautan Cepat (Footer)</h2>
+            <button type="button" onClick={() => setTautanCepat([...tautanCepat, { judul: '', url: '' }])} className="bg-blue-50 text-blue-600 hover:bg-blue-100 px-3 py-1 rounded text-sm font-semibold transition">
+              + Tambah Tautan
+            </button>
+          </div>
+          <div className="space-y-3">
+            {tautanCepat.map((tautan, index) => (
+              <div key={index} className="flex gap-3 items-center">
+                <input 
+                  type="text" 
+                  placeholder="Judul Tautan (misal: Beranda)" 
+                  value={tautan.judul}
+                  onChange={(e) => {
+                    const newTautan = [...tautanCepat];
+                    newTautan[index].judul = e.target.value;
+                    setTautanCepat(newTautan);
+                  }}
+                  required
+                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none" 
+                />
+                <input 
+                  type="text" 
+                  placeholder="URL (misal: /profil atau https://...)" 
+                  value={tautan.url}
+                  onChange={(e) => {
+                    const newTautan = [...tautanCepat];
+                    newTautan[index].url = e.target.value;
+                    setTautanCepat(newTautan);
+                  }}
+                  required
+                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none" 
+                />
+                <button 
+                  type="button" 
+                  onClick={() => {
+                    const newTautan = [...tautanCepat];
+                    newTautan.splice(index, 1);
+                    setTautanCepat(newTautan);
+                  }}
+                  className="bg-red-50 text-red-500 hover:bg-red-100 w-10 h-10 rounded-lg flex items-center justify-center transition"
+                  title="Hapus Tautan"
+                >
+                  <i className="fas fa-trash"></i>
+                </button>
+              </div>
+            ))}
+            {tautanCepat.length === 0 && (
+              <p className="text-sm text-gray-500 italic text-center py-4">Belum ada tautan cepat. Klik "+ Tambah Tautan" untuk menambahkan.</p>
+            )}
           </div>
         </div>
 

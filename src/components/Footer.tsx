@@ -17,6 +17,19 @@ export default async function Footer() {
   const yt = web?.link_youtube || '#';
   const gmapsLink = web?.link_gmaps || 'https://maps.google.com';
   const gmapsIframe = web?.gmaps_iframe || 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3952.0!2d110.42!3d-7.65!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zN8KwMzknMDAuMCJTIDExMMKwMjUnMTIuMCJF!5e0!3m2!1sid!2sid!4v1';
+  
+  const tautanCepat = web?.tautan_cepat ? 
+    (typeof web.tautan_cepat === 'string' ? JSON.parse(web.tautan_cepat) : web.tautan_cepat) : 
+    [
+      { judul: 'Beranda', url: '/' },
+      { judul: 'Profil Kelurahan', url: '/profil' },
+      { judul: 'Berita', url: '/berita' },
+      { judul: 'Layanan', url: '/layanan' },
+      { judul: 'Potensi Desa', url: '/potensi' },
+      { judul: 'Galeri', url: '/galeri' },
+      { judul: 'Hubungi Kami', url: '/kontak' },
+      { judul: 'Pemkab Sleman', url: '#' }
+    ];
 
   return (
     <>
@@ -45,14 +58,13 @@ export default async function Footer() {
           <div className="space-y-4">
             <h4 className="text-white font-bold text-base uppercase tracking-wide border-b border-gray-700 pb-2">Tautan Cepat</h4>
             <ul className="text-xs space-y-2 grid grid-cols-1 sm:grid-cols-2">
-              <li><Link href="/" className="hover:text-yellow-400 transition"><i className="fas fa-chevron-right text-[10px] mr-1"></i> Beranda</Link></li>
-              <li><Link href="/profil" className="hover:text-yellow-400 transition"><i className="fas fa-chevron-right text-[10px] mr-1"></i> Profil Kelurahan</Link></li>
-              <li><Link href="/berita" className="hover:text-yellow-400 transition"><i className="fas fa-chevron-right text-[10px] mr-1"></i> Berita</Link></li>
-              <li><Link href="/layanan" className="hover:text-yellow-400 transition"><i className="fas fa-chevron-right text-[10px] mr-1"></i> Layanan</Link></li>
-              <li><Link href="/potensi" className="hover:text-yellow-400 transition"><i className="fas fa-chevron-right text-[10px] mr-1"></i> Potensi Desa</Link></li>
-              <li><Link href="/galeri" className="hover:text-yellow-400 transition"><i className="fas fa-chevron-right text-[10px] mr-1"></i> Galeri</Link></li>
-              <li><Link href="/kontak" className="hover:text-yellow-400 transition"><i className="fas fa-chevron-right text-[10px] mr-1"></i> Hubungi Kami</Link></li>
-              <li><Link href="#" className="hover:text-yellow-400 transition"><i className="fas fa-chevron-right text-[10px] mr-1"></i> Pemkab Sleman</Link></li>
+              {tautanCepat.map((tautan: any, idx: number) => (
+                <li key={idx}>
+                  <Link href={tautan.url} className="hover:text-yellow-400 transition">
+                    <i className="fas fa-chevron-right text-[10px] mr-1"></i> {tautan.judul}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
           {/* Peta */}
