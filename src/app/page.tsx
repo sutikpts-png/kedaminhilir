@@ -7,8 +7,8 @@ export const revalidate = 0;
 export default async function Home() {
   const { data: web } = await supabase.from('pengaturan_web').select('*').eq('id', 1).single();
   const { data: latestBerita } = await supabase.from('berita').select('*').order('tanggal_publikasi', { ascending: false }).limit(3);
-  const { data: latestFoto } = await supabase.from('galeri').select('*').eq('kategori', 'Foto').order('tanggal', { ascending: false }).limit(8);
-  const { data: latestVideo } = await supabase.from('galeri').select('*').eq('kategori', 'Video').order('tanggal', { ascending: false }).limit(6);
+  const { data: latestFoto } = await supabase.from('galeri').select('*').eq('kategori', 'Foto').order('created_at', { ascending: false }).limit(8);
+  const { data: latestVideo } = await supabase.from('galeri').select('*').eq('kategori', 'Video').order('created_at', { ascending: false }).limit(6);
 
   const heroBg = web?.hero_image_url || '/assets/img/hero-bg.jpg';
   const heroTitle = web?.hero_title || 'Selamat Datang di<br/><span class="text-yellow-300">Kelurahan Kedamin Hilir</span>';

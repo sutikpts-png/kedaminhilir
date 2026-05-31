@@ -7,7 +7,7 @@ export default async function GaleriPage() {
   const { data: galeri } = await supabase
     .from('galeri')
     .select('*')
-    .order('tanggal', { ascending: false });
+    .order('created_at', { ascending: false });
 
   const galeriList = galeri || [];
 

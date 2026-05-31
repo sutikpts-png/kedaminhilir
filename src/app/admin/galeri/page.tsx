@@ -16,7 +16,7 @@ export default function AdminGaleri() {
     const { data, error } = await supabase
       .from('galeri')
       .select('*')
-      .order('tanggal', { ascending: false });
+      .order('created_at', { ascending: false });
     
     if (data) setGaleri(data);
     setLoading(false);
