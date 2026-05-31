@@ -20,6 +20,7 @@ const NavLink = ({ item, className }: { item: any, className: string }) => {
 
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [currentTime, setCurrentTime] = useState<Date | null>(null);
   const [menus, setMenus] = useState<any[]>([]);
   const [web, setWeb] = useState<any>({
     telepon: '(0274) 895123',
@@ -57,6 +58,14 @@ export default function Navbar() {
       }
     }
     fetchData();
+
+    // Start live clock
+    setCurrentTime(new Date());
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+    
+    return () => clearInterval(timer);
   }, []);
 
   return (
@@ -72,8 +81,19 @@ export default function Navbar() {
             {web.link_facebook !== '#' && web.link_facebook !== '' && <Link href={web.link_facebook} target="_blank" className="hover:text-green-300 transition"><i className="fab fa-facebook"></i></Link>}
             {web.link_instagram !== '#' && web.link_instagram !== '' && <Link href={web.link_instagram} target="_blank" className="hover:text-green-300 transition"><i className="fab fa-instagram"></i></Link>}
             {web.link_youtube !== '#' && web.link_youtube !== '' && <Link href={web.link_youtube} target="_blank" className="hover:text-green-300 transition"><i className="fab fa-youtube"></i></Link>}
-            <span className="border-l border-green-700 pl-4 text-green-200">
-              {new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+            <span className="border-l border-green-700 pl-4 text-green-200 flex items-center">
+              {currentTime ? (
+                <>
+                  <i className="far fa-calendar-alt mr-1"></i> 
+                  <span className="hidden sm:inline">{currentTime.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                  <span className="sm:hidden">{currentTime.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+                  <span className="mx-2 opacity-50">|</span>
+                  <i className="far fa-clock mr-1"></i> 
+                  {currentTime.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                </>
+              ) : (
+                <span className="opacity-50">Memuat waktu...</span>
+              )}
             </span>
           </div>
         </div>
