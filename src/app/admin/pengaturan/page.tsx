@@ -6,12 +6,14 @@ import { supabase } from '@/lib/supabase';
 export default function PengaturanWeb() {
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(true);
-  const [file, setFile] = useState<File | null>(null);
+  const [heroFile, setHeroFile] = useState<File | null>(null);
+  const [logoFile, setLogoFile] = useState<File | null>(null);
   const [formData, setFormData] = useState({
     telepon: '',
     email: '',
     nama_kelurahan: '',
     nama_kecamatan_kabupaten: '',
+    logo_url: '',
     hero_title: '',
     hero_subtitle: '',
     hero_image_url: '',
@@ -52,13 +54,15 @@ export default function PengaturanWeb() {
     setLoading(true);
 
     let finalImageUrl = formData.hero_image_url;
+    let finalLogoUrl = formData.logo_url;
 
-    if (file) {
-      const fileExt = file.name.split('.').pop();
+    // Upload Hero Image
+    if (heroFile) {
+      const fileExt = heroFile.name.split('.').pop();
       const fileName = `hero-${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
       const { error: uploadError } = await supabase.storage
         .from('gambar')
-        .upload(fileName, file);
+        .upload(fileName, heroFile);
 
       if (uploadError) {
         alert('Gagal mengupload gambar hero: ' + uploadError.message);
@@ -70,9 +74,27 @@ export default function PengaturanWeb() {
       finalImageUrl = data.publicUrl;
     }
 
+    // Upload Logo Image
+    if (logoFile) {
+      const fileExt = logoFile.name.split('.').pop();
+      const fileName = `logo-${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+      const { error: uploadError } = await supabase.storage
+        .from('gambar')
+        .upload(fileName, logoFile);
+
+      if (uploadError) {
+        alert('Gagal mengupload gambar logo: ' + uploadError.message);
+        setLoading(false);
+        return;
+      }
+
+      const { data } = supabase.storage.from('gambar').getPublicUrl(fileName);
+      finalLogoUrl = data.publicUrl;
+    }
+
     const { error } = await supabase
       .from('pengaturan_web')
-      .update({ ...formData, hero_image_url: finalImageUrl })
+      .update({ ...formData, hero_image_url: finalImageUrl, logo_url: finalLogoUrl })
       .eq('id', 1);
 
     setLoading(false);
@@ -115,6 +137,17 @@ export default function PengaturanWeb() {
               <input type="email" name="email" required value={formData.email} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none" />
             </div>
           </div>
+          
+          <div className="mt-5 border-t border-gray-100 pt-5">
+            <label className="block text-sm font-semibold text-gray-700 mb-1">Logo Website (Format PNG Transparan Disarankan)</label>
+            {formData.logo_url && (
+              <div className="mb-2">
+                <img src={formData.logo_url} alt="Logo Preview" className="h-16 w-auto object-contain bg-gray-100 rounded border p-1" />
+              </div>
+            )}
+            <input type="file" accept="image/*" onChange={(e) => { if (e.target.files) setLogoFile(e.target.files[0]); else setLogoFile(null); }} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100" />
+            <p className="text-xs text-gray-500 mt-1">Biarkan kosong jika tidak ingin mengubah logo saat ini.</p>
+          </div>
         </div>
 
         {/* HERO BANNER */}
@@ -136,7 +169,7 @@ export default function PengaturanWeb() {
                   <img src={formData.hero_image_url} alt="Hero Preview" className="h-32 object-cover rounded border" />
                 </div>
               )}
-              <input type="file" accept="image/*" onChange={(e) => { if (e.target.files) setFile(e.target.files[0]); else setFile(null); }} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100" />
+              <input type="file" accept="image/*" onChange={(e) => { if (e.target.files) setHeroFile(e.target.files[0]); else setHeroFile(null); }} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100" />
               <p className="text-xs text-gray-500 mt-1">Biarkan kosong jika tidak ingin mengubah background image saat ini.</p>
             </div>
           </div>

@@ -49,7 +49,13 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-4 py-3 flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex items-center gap-3">
             <div className="w-12 h-14 flex items-center justify-center">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Lambang_Kabupaten_Kapuas_Hulu.webp/600px-Lambang_Kabupaten_Kapuas_Hulu.webp.png" alt="Logo Kapuas Hulu" className="h-full w-auto object-contain drop-shadow-sm" />
+              {web.logo_url ? (
+                <img src={web.logo_url} alt={`Logo ${web.nama_kelurahan}`} className="h-full w-auto object-contain drop-shadow-sm" />
+              ) : (
+                <div className="w-12 h-12 bg-green-700 flex items-center justify-center rounded-full text-white font-bold text-[10px] text-center leading-none p-1 shadow">
+                  LOGO
+                </div>
+              )}
             </div>
             <div>
               <h1 className="text-base font-bold text-green-900 uppercase tracking-tight leading-tight">Kelurahan {web.nama_kelurahan}</h1>
