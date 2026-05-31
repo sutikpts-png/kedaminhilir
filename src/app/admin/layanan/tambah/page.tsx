@@ -8,6 +8,7 @@ import { supabase } from '@/lib/supabase';
 export default function TambahLayanan() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [file, setFile] = useState<File | null>(null);
   const [formData, setFormData] = useState({
     nama_layanan: '',
     deskripsi: '',
@@ -23,7 +24,26 @@ export default function TambahLayanan() {
     e.preventDefault();
     setLoading(true);
 
-    const { error } = await supabase.from('layanan').insert([{ ...formData }]);
+    let finalIkonUrl = formData.ikon_url;
+
+    if (file) {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+      const { error: uploadError } = await supabase.storage
+        .from('gambar')
+        .upload(fileName, file);
+
+      if (uploadError) {
+        alert('Gagal mengupload ikon: ' + uploadError.message + '\n\nPastikan bucket "gambar" sudah dibuat dan public di Supabase!');
+        setLoading(false);
+        return;
+      }
+
+      const { data } = supabase.storage.from('gambar').getPublicUrl(fileName);
+      finalIkonUrl = data.publicUrl;
+    }
+
+    const { error } = await supabase.from('layanan').insert([{ ...formData, ikon_url: finalIkonUrl }]);
     setLoading(false);
 
     if (error) {
@@ -55,12 +75,17 @@ export default function TambahLayanan() {
             />
           </div>
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1">URL Ikon (Opsional)</label>
+            <label className="block text-sm font-semibold text-gray-700 mb-1">Ikon (Opsional)</label>
             <input 
-              type="url" name="ikon_url" 
-              value={formData.ikon_url} onChange={handleChange}
-              placeholder="https://..."
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none" 
+              type="file" accept="image/*"
+              onChange={(e) => {
+                if (e.target.files && e.target.files.length > 0) {
+                  setFile(e.target.files[0]);
+                } else {
+                  setFile(null);
+                }
+              }}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100" 
             />
           </div>
           <div>
