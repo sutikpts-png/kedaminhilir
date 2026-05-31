@@ -16,7 +16,27 @@ export default async function Footer() {
   const ig = web?.link_instagram || '#';
   const yt = web?.link_youtube || '#';
   const gmapsLink = web?.link_gmaps || 'https://maps.google.com';
-  const gmapsIframe = web?.gmaps_iframe || 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3952.0!2d110.42!3d-7.65!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zN8KwMzknMDAuMCJTIDExMMKwMjUnMTIuMCJF!5e0!3m2!1sid!2sid!4v1';
+  
+  let gmapsIframe = 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3952.0!2d110.42!3d-7.65!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zN8KwMzknMDAuMCJTIDExMMKwMjUnMTIuMCJF!5e0!3m2!1sid!2sid!4v1';
+  
+  if (web?.gmaps_iframe) {
+    const userInput = web.gmaps_iframe;
+    // Jika user mem-paste seluruh tag <iframe>
+    if (userInput.includes('<iframe') && userInput.includes('src="')) {
+      const match = userInput.match(/src="([^"]+)"/);
+      if (match && match[1]) {
+        gmapsIframe = match[1];
+      }
+    } 
+    // Jika user mem-paste URL embed yang benar
+    else if (userInput.includes('/embed') || userInput.includes('output=embed')) {
+      gmapsIframe = userInput;
+    }
+    // Jika salah (paste link biasa), gunakan alamat sebagai fallback embed
+    else {
+      gmapsIframe = `https://maps.google.com/maps?q=${encodeURIComponent(alamat)}&t=&z=14&ie=UTF8&iwloc=&output=embed`;
+    }
+  }
   
   const tautanCepat = web?.tautan_cepat ? 
     (typeof web.tautan_cepat === 'string' ? JSON.parse(web.tautan_cepat) : web.tautan_cepat) : 
