@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 
 export default function VisitorCounter() {
-  const [stats, setStats] = useState({ harian: 0, bulanan: 0, tahunan: 0 });
+  const [stats, setStats] = useState({ harian: 0, mingguan: 0, bulanan: 0, tahunan: 0 });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -29,6 +29,10 @@ export default function VisitorCounter() {
           <span className="font-mono bg-gray-800 px-2 py-0.5 rounded text-white animate-pulse">...</span>
         </li>
         <li className="flex justify-between items-center border-b border-gray-800 pb-1">
+          <span><i className="fas fa-calendar-week text-yellow-400 mr-2"></i> Minggu Ini</span>
+          <span className="font-mono bg-gray-800 px-2 py-0.5 rounded text-white animate-pulse">...</span>
+        </li>
+        <li className="flex justify-between items-center border-b border-gray-800 pb-1">
           <span><i className="fas fa-chart-line text-yellow-400 mr-2"></i> Bulan Ini</span>
           <span className="font-mono bg-gray-800 px-2 py-0.5 rounded text-white animate-pulse">...</span>
         </li>
@@ -45,6 +49,10 @@ export default function VisitorCounter() {
       <li className="flex justify-between items-center border-b border-gray-800 pb-1">
         <span><i className="fas fa-users text-yellow-400 mr-2"></i> Hari Ini</span>
         <span className="font-mono bg-gray-800 px-2 py-0.5 rounded text-white">{stats.harian.toLocaleString('id-ID')}</span>
+      </li>
+      <li className="flex justify-between items-center border-b border-gray-800 pb-1">
+        <span><i className="fas fa-calendar-week text-yellow-400 mr-2"></i> Minggu Ini</span>
+        <span className="font-mono bg-gray-800 px-2 py-0.5 rounded text-white">{stats.mingguan.toLocaleString('id-ID')}</span>
       </li>
       <li className="flex justify-between items-center border-b border-gray-800 pb-1">
         <span><i className="fas fa-chart-line text-yellow-400 mr-2"></i> Bulan Ini</span>

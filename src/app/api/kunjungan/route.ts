@@ -40,6 +40,16 @@ export async function GET() {
       .eq('tanggal', todayStr)
       .single();
 
+    // Mingguan (7 Hari Terakhir)
+    const lastWeek = new Date(today);
+    lastWeek.setDate(today.getDate() - 7);
+    const lastWeekStr = lastWeek.toISOString().split('T')[0];
+    const { data: dataMingguan } = await supabase
+      .from('statistik_pengunjung')
+      .select('jumlah')
+      .gte('tanggal', lastWeekStr)
+      .lte('tanggal', todayStr);
+
     // Bulanan
     const startDate = `${currentYear}-${String(currentMonth).padStart(2, '0')}-01`;
     const endDate = `${currentYear}-${String(currentMonth).padStart(2, '0')}-31`;
@@ -59,12 +69,13 @@ export async function GET() {
       .lte('tanggal', endYear);
 
     const harian = dataHarian ? dataHarian.jumlah : 1;
+    const mingguan = dataMingguan ? dataMingguan.reduce((acc, curr) => acc + curr.jumlah, 0) : 1;
     const bulanan = dataBulanan ? dataBulanan.reduce((acc, curr) => acc + curr.jumlah, 0) : 1;
     const tahunan = dataTahunan ? dataTahunan.reduce((acc, curr) => acc + curr.jumlah, 0) : 1;
 
-    return NextResponse.json({ harian, bulanan, tahunan });
+    return NextResponse.json({ harian, mingguan, bulanan, tahunan });
   } catch (error) {
     console.error("Error updating visitor stats:", error);
-    return NextResponse.json({ harian: 0, bulanan: 0, tahunan: 0 });
+    return NextResponse.json({ harian: 0, mingguan: 0, bulanan: 0, tahunan: 0 });
   }
 }
