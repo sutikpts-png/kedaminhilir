@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import GallerySlider from "@/components/GallerySlider";
+import HeroSlider from "@/components/HeroSlider";
 
 export const revalidate = 0;
 
@@ -10,16 +11,29 @@ export default async function Home() {
   const { data: latestFoto } = await supabase.from('galeri').select('*').eq('kategori', 'Foto').order('created_at', { ascending: false }).limit(8);
   const { data: latestVideo } = await supabase.from('galeri').select('*').eq('kategori', 'Video').order('created_at', { ascending: false }).limit(6);
 
-  const heroBg = web?.hero_image_url || '/assets/img/hero-bg.jpg';
   const heroTitle = web?.hero_title || 'Selamat Datang di<br/><span class="text-yellow-300">Kelurahan Kedamin Hilir</span>';
   const heroSubtitle = web?.hero_subtitle || 'Melayani masyarakat dengan tulus, transparan, dan profesional demi terwujudnya kelurahan yang maju, sejahtera, dan berdaya saing.';
+
+  let heroBgArr = ['/assets/img/hero-bg.jpg'];
+  if (web?.hero_image_url) {
+    try {
+      const parsed = JSON.parse(web.hero_image_url);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        heroBgArr = parsed;
+      } else if (typeof parsed === 'string') {
+        heroBgArr = [parsed];
+      }
+    } catch (e) {
+      heroBgArr = [web.hero_image_url];
+    }
+  }
 
   return (
     <>
       {/* HERO SECTION */}
       <section className="relative text-white py-20 px-4 overflow-hidden bg-green-900">
-        <div className="absolute inset-0 opacity-100" style={{ backgroundImage: `url('${heroBg}')`, backgroundSize: 'cover', backgroundPosition: 'center' }}></div>
-        <div className="absolute inset-0 bg-gradient-to-r from-green-900/75 via-green-900/60 to-teal-800/50"></div>
+        <HeroSlider images={heroBgArr} />
+        <div className="absolute inset-0 bg-gradient-to-r from-green-900/75 via-green-900/60 to-teal-800/50 z-0"></div>
         <div className="max-w-7xl mx-auto relative z-10 grid grid-cols-1 md:grid-cols-2 items-center gap-10">
           <div className="space-y-6 fade-in drop-shadow-md">
             <span className="bg-yellow-400 text-yellow-900 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow-sm">Pemerintahan Kelurahan</span>
