@@ -8,6 +8,7 @@ import { supabase } from '@/lib/supabase';
 export default function TambahGaleri() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [file, setFile] = useState<File | null>(null);
   const [formData, setFormData] = useState({
     judul: '',
     kategori: 'Kegiatan',
@@ -23,7 +24,32 @@ export default function TambahGaleri() {
     e.preventDefault();
     setLoading(true);
 
-    const { error } = await supabase.from('galeri').insert([{ ...formData }]);
+    let finalGambarUrl = formData.gambar_url;
+
+    if (file) {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+      const { error: uploadError } = await supabase.storage
+        .from('gambar')
+        .upload(fileName, file);
+
+      if (uploadError) {
+        alert('Gagal mengupload gambar: ' + uploadError.message + '\n\nPastikan bucket "gambar" sudah dibuat dan public di Supabase!');
+        setLoading(false);
+        return;
+      }
+
+      const { data } = supabase.storage.from('gambar').getPublicUrl(fileName);
+      finalGambarUrl = data.publicUrl;
+    }
+
+    if (!finalGambarUrl) {
+      alert('Harap pilih gambar terlebih dahulu!');
+      setLoading(false);
+      return;
+    }
+
+    const { error } = await supabase.from('galeri').insert([{ ...formData, gambar_url: finalGambarUrl }]);
     setLoading(false);
 
     if (error) {
@@ -67,12 +93,17 @@ export default function TambahGaleri() {
             </select>
           </div>
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1">URL Gambar *</label>
+            <label className="block text-sm font-semibold text-gray-700 mb-1">Gambar *</label>
             <input 
-              type="url" name="gambar_url" required
-              value={formData.gambar_url} onChange={handleChange}
-              placeholder="https://..."
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none" 
+              type="file" accept="image/*" required
+              onChange={(e) => {
+                if (e.target.files && e.target.files.length > 0) {
+                  setFile(e.target.files[0]);
+                } else {
+                  setFile(null);
+                }
+              }}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100" 
             />
           </div>
           <div>
