@@ -71,14 +71,20 @@ export async function GET() {
       .gte('tanggal', startYear)
       .lte('tanggal', endYear);
 
+    // Keseluruhan
+    const { data: dataKeseluruhan } = await supabase
+      .from('statistik_pengunjung')
+      .select('jumlah');
+
     const harian = dataHarian ? dataHarian.jumlah : 1;
     const mingguan = dataMingguan ? dataMingguan.reduce((acc, curr) => acc + curr.jumlah, 0) : 1;
     const bulanan = dataBulanan ? dataBulanan.reduce((acc, curr) => acc + curr.jumlah, 0) : 1;
     const tahunan = dataTahunan ? dataTahunan.reduce((acc, curr) => acc + curr.jumlah, 0) : 1;
+    const keseluruhan = dataKeseluruhan ? dataKeseluruhan.reduce((acc, curr) => acc + curr.jumlah, 0) : 1;
 
-    return NextResponse.json({ harian, mingguan, bulanan, tahunan });
+    return NextResponse.json({ harian, mingguan, bulanan, tahunan, keseluruhan });
   } catch (error) {
     console.error("Error updating visitor stats:", error);
-    return NextResponse.json({ harian: 0, mingguan: 0, bulanan: 0, tahunan: 0 });
+    return NextResponse.json({ harian: 0, mingguan: 0, bulanan: 0, tahunan: 0, keseluruhan: 0 });
   }
 }

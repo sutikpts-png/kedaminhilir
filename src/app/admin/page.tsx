@@ -30,12 +30,10 @@ export default async function AdminDashboard() {
   const startMonth = `${currentYear}-${String(currentMonth).padStart(2, '0')}-01`;
   const startYear = `${currentYear}-01-01`;
 
-  // Fetch semua statistik kunjungan yang masuk rentang tahun ini untuk diolah
+  // Fetch semua statistik kunjungan untuk diolah (termasuk keseluruhan)
   const { data: rawStats } = await supabase
     .from('statistik_pengunjung')
-    .select('tanggal, jumlah')
-    .gte('tanggal', startYear)
-    .lte('tanggal', todayStr);
+    .select('tanggal, jumlah');
 
   const stats = rawStats || [];
 
@@ -43,9 +41,14 @@ export default async function AdminDashboard() {
   let countMingguIni = 0;
   let countBulanIni = 0;
   let countTahunIni = 0;
+  let countKeseluruhan = 0;
 
   stats.forEach((row) => {
-    countTahunIni += row.jumlah;
+    countKeseluruhan += row.jumlah;
+
+    if (row.tanggal >= startYear) {
+      countTahunIni += row.jumlah;
+    }
     
     if (row.tanggal >= startMonth) {
       countBulanIni += row.jumlah;
@@ -115,7 +118,7 @@ export default async function AdminDashboard() {
       
       {/* SECTION: STATISTIK PENGUNJUNG */}
       <h2 className="text-lg font-bold text-gray-800 mb-4">Statistik Pengunjung Website</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 mb-10">
         <div className="bg-white p-6 rounded-xl border border-teal-100 shadow-sm bg-gradient-to-br from-white to-teal-50">
           <div className="flex items-center justify-between">
             <div>
@@ -130,7 +133,7 @@ export default async function AdminDashboard() {
         <div className="bg-white p-6 rounded-xl border border-blue-100 shadow-sm bg-gradient-to-br from-white to-blue-50">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-blue-700">7 Hari Terakhir</p>
+              <p className="text-sm font-medium text-blue-700">Minggu Ini</p>
               <h3 className="text-3xl font-extrabold text-blue-900 mt-1">{countMingguIni.toLocaleString('id-ID')}</h3>
             </div>
             <div className="w-14 h-14 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-2xl shadow-inner">
@@ -156,6 +159,17 @@ export default async function AdminDashboard() {
               <h3 className="text-3xl font-extrabold text-rose-900 mt-1">{countTahunIni.toLocaleString('id-ID')}</h3>
             </div>
             <div className="w-14 h-14 bg-rose-100 text-rose-600 rounded-full flex items-center justify-center text-2xl shadow-inner">
+              <i className="fas fa-calendar-alt"></i>
+            </div>
+          </div>
+        </div>
+        <div className="bg-white p-6 rounded-xl border border-yellow-100 shadow-sm bg-gradient-to-br from-white to-yellow-50">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-yellow-700">Keseluruhan</p>
+              <h3 className="text-3xl font-extrabold text-yellow-900 mt-1">{countKeseluruhan.toLocaleString('id-ID')}</h3>
+            </div>
+            <div className="w-14 h-14 bg-yellow-100 text-yellow-600 rounded-full flex items-center justify-center text-2xl shadow-inner">
               <i className="fas fa-globe"></i>
             </div>
           </div>

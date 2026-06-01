@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 
 export default function VisitorCounter() {
-  const [stats, setStats] = useState({ harian: 0, mingguan: 0, bulanan: 0, tahunan: 0 });
+  const [stats, setStats] = useState({ harian: 0, mingguan: 0, bulanan: 0, tahunan: 0, keseluruhan: 0 });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -37,7 +37,11 @@ export default function VisitorCounter() {
           <span className="font-mono bg-gray-800 px-2 py-0.5 rounded text-white animate-pulse">...</span>
         </li>
         <li className="flex justify-between items-center border-b border-gray-800 pb-1">
-          <span><i className="fas fa-globe text-yellow-400 mr-2"></i> Total Tahun Ini</span>
+          <span><i className="fas fa-calendar-alt text-yellow-400 mr-2"></i> Total Tahun Ini</span>
+          <span className="font-mono bg-gray-800 px-2 py-0.5 rounded text-white animate-pulse">...</span>
+        </li>
+        <li className="flex justify-between items-center border-b border-gray-800 pb-1 text-gray-300">
+          <span><i className="fas fa-globe text-yellow-400 mr-2"></i> Total Keseluruhan</span>
           <span className="font-mono bg-gray-800 px-2 py-0.5 rounded text-white animate-pulse">...</span>
         </li>
       </ul>
@@ -59,8 +63,12 @@ export default function VisitorCounter() {
         <span className="font-mono bg-gray-800 px-2 py-0.5 rounded text-white">{(stats.bulanan || 0).toLocaleString('id-ID')}</span>
       </li>
       <li className="flex justify-between items-center border-b border-gray-800 pb-1">
-        <span><i className="fas fa-globe text-yellow-400 mr-2"></i> Total Tahun Ini</span>
+        <span><i className="fas fa-calendar-alt text-yellow-400 mr-2"></i> Total Tahun Ini</span>
         <span className="font-mono bg-gray-800 px-2 py-0.5 rounded text-white">{(stats.tahunan || 0).toLocaleString('id-ID')}</span>
+      </li>
+      <li className="flex justify-between items-center border-b border-gray-800 pb-1 text-gray-300">
+        <span><i className="fas fa-globe text-yellow-400 mr-2"></i> Total Keseluruhan</span>
+        <span className="font-mono bg-gray-800 px-2 py-0.5 rounded text-white">{(stats.keseluruhan || 0).toLocaleString('id-ID')}</span>
       </li>
     </ul>
   );
