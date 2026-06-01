@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
+import RichTextEditor from '@/components/RichTextEditor';
 
 const generateSlug = (text: string) => {
   return text
@@ -131,12 +132,12 @@ export default function EditHalaman() {
           
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-1">Isi Konten Halaman</label>
-            <p className="text-xs text-gray-500 mb-2">Anda bisa menggunakan tag HTML dasar seperti &lt;h2&gt;, &lt;b&gt;, &lt;br&gt;, &lt;p&gt; untuk merapikan tulisan.</p>
-            <textarea 
-              name="konten" required rows={15}
-              value={formData.konten} onChange={handleChange}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none resize-y" 
-            ></textarea>
+            <div className="border border-gray-300 rounded-lg overflow-hidden">
+              <RichTextEditor 
+                value={formData.konten} 
+                onChange={(val) => setFormData({ ...formData, konten: val })}
+              />
+            </div>
           </div>
           
           <div className="flex justify-end pt-4 border-t border-gray-100">

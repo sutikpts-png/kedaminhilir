@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
+import RichTextEditor from '@/components/RichTextEditor';
 
 export default function EditBerita() {
   const router = useRouter();
@@ -124,11 +125,13 @@ export default function EditBerita() {
           </div>
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-1">Konten Berita</label>
-            <textarea 
-              name="konten" required rows={8}
-              value={formData.konten} onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none resize-none" 
-            ></textarea>
+            <div className="border border-gray-300 rounded-lg overflow-hidden">
+              <RichTextEditor 
+                value={formData.konten} 
+                onChange={(val) => setFormData({ ...formData, konten: val })}
+                placeholder="Tulis konten berita di sini..."
+              />
+            </div>
           </div>
           <div className="flex justify-end pt-4">
             <button 

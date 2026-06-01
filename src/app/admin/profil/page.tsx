@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
+import RichTextEditor from '@/components/RichTextEditor';
 
 export default function EditProfil() {
   const router = useRouter();
@@ -110,31 +111,32 @@ export default function EditProfil() {
           
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-1">Sejarah Kelurahan</label>
-            <p className="text-xs text-gray-500 mb-2">Gunakan tag HTML dasar jika perlu (misal: &lt;p&gt;, &lt;br&gt;, &lt;b&gt;).</p>
-            <textarea 
-              name="sejarah" required rows={5}
-              value={formData.sejarah} onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none" 
-            />
+            <div className="border border-gray-300 rounded-lg overflow-hidden">
+              <RichTextEditor 
+                value={formData.sejarah} 
+                onChange={(val) => setFormData({ ...formData, sejarah: val })}
+              />
+            </div>
           </div>
 
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-1">Visi</label>
-            <textarea 
-              name="visi" required rows={2}
-              value={formData.visi} onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none" 
-            />
+            <div className="border border-gray-300 rounded-lg overflow-hidden">
+              <RichTextEditor 
+                value={formData.visi} 
+                onChange={(val) => setFormData({ ...formData, visi: val })}
+              />
+            </div>
           </div>
 
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-1">Misi</label>
-            <p className="text-xs text-gray-500 mb-2">Pisahkan setiap misi dengan enter atau HTML list &lt;ol&gt; &lt;li&gt;.</p>
-            <textarea 
-              name="misi" required rows={5}
-              value={formData.misi} onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none" 
-            />
+            <div className="border border-gray-300 rounded-lg overflow-hidden">
+              <RichTextEditor 
+                value={formData.misi} 
+                onChange={(val) => setFormData({ ...formData, misi: val })}
+              />
+            </div>
           </div>
 
           <div>

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
+import RichTextEditor from '@/components/RichTextEditor';
 
 export default function TambahLayanan() {
   const router = useRouter();
@@ -97,14 +98,14 @@ export default function TambahLayanan() {
             ></textarea>
           </div>
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1">Persyaratan (Gunakan tag HTML dasar untuk list)</label>
-            <textarea 
-              name="persyaratan" rows={6}
-              value={formData.persyaratan} onChange={handleChange}
-              placeholder="<ul><li>Fotokopi KK</li><li>Surat Pengantar RT/RW</li></ul>"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none font-mono text-sm" 
-            ></textarea>
-            <p className="text-xs text-gray-500 mt-1">Gunakan &lt;ul&gt; dan &lt;li&gt; untuk format daftar persyaratan.</p>
+            <label className="block text-sm font-semibold text-gray-700 mb-1">Persyaratan</label>
+            <div className="border border-gray-300 rounded-lg overflow-hidden">
+              <RichTextEditor 
+                value={formData.persyaratan} 
+                onChange={(val) => setFormData({ ...formData, persyaratan: val })}
+                placeholder="Tulis persyaratan layanan di sini..."
+              />
+            </div>
           </div>
           <div className="flex justify-end pt-4">
             <button 

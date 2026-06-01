@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
+import RichTextEditor from '@/components/RichTextEditor';
 
 export default function TambahPotensi() {
   const router = useRouter();
@@ -88,12 +89,13 @@ export default function TambahPotensi() {
             />
           </div>
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1">Deskripsi Detail (Bisa menggunakan tag HTML dasar untuk paragraf &lt;p&gt;)</label>
-            <textarea 
-              name="deskripsi" required rows={8}
-              value={formData.deskripsi} onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none resize-none font-mono text-sm" 
-            ></textarea>
+            <label className="block text-sm font-semibold text-gray-700 mb-1">Deskripsi Detail</label>
+            <div className="border border-gray-300 rounded-lg overflow-hidden">
+              <RichTextEditor 
+                value={formData.deskripsi} 
+                onChange={(val) => setFormData({ ...formData, deskripsi: val })}
+              />
+            </div>
           </div>
           <div className="flex justify-end pt-4">
             <button 

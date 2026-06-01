@@ -1,5 +1,5 @@
 @import "tailwindcss";
-
+@import "react-quill-new/dist/quill.snow.css";
 /* ===== GLOBAL STYLES ===== */
 html { scroll-behavior: smooth; }
 
@@ -97,6 +97,25 @@ html { scroll-behavior: smooth; }
 .form-input:focus {
   border-color: #16a34a;
   box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.15);
+}
+
+/* React Quill Overrides */
+.quill .ql-toolbar {
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+  background-color: #f9fafb;
+  border-color: #d1d5db;
+  font-family: inherit;
+}
+.quill .ql-container {
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+  border-color: #d1d5db;
+  font-family: inherit;
+  font-size: 1rem;
+}
+.quill .ql-editor {
+  min-height: 200px;
 }
 
 /* Gallery grid */
