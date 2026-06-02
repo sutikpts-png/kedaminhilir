@@ -51,70 +51,92 @@ export default function AdminMenu() {
         </Link>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
         {loading ? (
           <div className="text-center text-gray-500 py-8">Memuat data...</div>
         ) : menus.length === 0 ? (
           <div className="text-center text-gray-500 py-8">Belum ada menu yang ditambahkan.</div>
         ) : (
-          <div className="space-y-4">
-            {menus.map((parent) => (
-              <div key={parent.id} className="border border-gray-200 rounded-lg overflow-hidden">
-                <div className="bg-gray-50 p-4 flex justify-between items-center">
-                  <div>
-                    <h3 className="font-bold text-gray-900">{parent.nama}</h3>
-                    <p className="text-xs text-gray-500 font-mono mt-1">{parent.link} | Urutan: {parent.urutan}</p>
-                  </div>
-                  <div className="flex gap-2">
-                    <Link 
-                      href={`/admin/menu/edit/${parent.id}`}
-                      className="bg-blue-500 text-white w-8 h-8 rounded shadow hover:bg-blue-600 flex items-center justify-center"
-                    >
-                      <i className="fas fa-edit text-xs"></i>
-                    </Link>
-                    <button 
-                      onClick={() => hapusMenu(parent.id)}
-                      className="bg-red-500 text-white w-8 h-8 rounded shadow hover:bg-red-600 flex items-center justify-center"
-                    >
-                      <i className="fas fa-trash text-xs"></i>
-                    </button>
-                  </div>
-                </div>
-                
-                {parent.children && parent.children.length > 0 && (
-                  <div className="border-t border-gray-200 bg-white p-4">
-                    <h4 className="text-xs font-bold text-gray-500 uppercase mb-3 tracking-wider">Sub Menu:</h4>
-                    <div className="space-y-2">
-                      {parent.children.map((child: any) => (
-                        <div key={child.id} className="flex justify-between items-center p-3 bg-gray-50 border border-gray-100 rounded">
-                          <div className="flex items-center gap-3">
-                            <i className="fas fa-level-up-alt rotate-90 text-gray-400"></i>
-                            <div>
-                              <p className="text-sm font-semibold text-gray-800">{child.nama}</p>
-                              <p className="text-xs text-gray-500 font-mono">{child.link} | Urutan: {child.urutan}</p>
-                            </div>
-                          </div>
-                          <div className="flex gap-2">
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm text-left text-gray-600">
+              <thead className="text-xs text-gray-700 uppercase bg-gray-50 border-b border-gray-200">
+                <tr>
+                  <th scope="col" className="px-6 py-4 font-bold">Nama <span className="text-blue-500 ml-1">▲</span></th>
+                  <th scope="col" className="px-6 py-4 font-bold">Link <span className="text-gray-300 ml-1">◆</span></th>
+                  <th scope="col" className="px-6 py-4 font-bold text-center">Aktif <span className="text-gray-300 ml-1">◆</span></th>
+                  <th scope="col" className="px-6 py-4 font-bold text-center">Urutan <span className="text-gray-300 ml-1">◆</span></th>
+                  <th scope="col" className="px-6 py-4 font-bold">Class <span className="text-gray-300 ml-1">◆</span></th>
+                  <th scope="col" className="px-6 py-4 font-bold">Icon <span className="text-gray-300 ml-1">◆</span></th>
+                  <th scope="col" className="px-6 py-4 font-bold text-center w-28">Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                {menus.map((parent) => {
+                  const hasChildren = parent.children && parent.children.length > 0;
+                  return (
+                    <React.Fragment key={parent.id}>
+                      <tr className="bg-white border-b border-gray-100 hover:bg-gray-50 transition">
+                        <td className="px-6 py-3 font-medium text-gray-900">{parent.nama}</td>
+                        <td className="px-6 py-3 text-gray-500">{parent.link}</td>
+                        <td className="px-6 py-3 text-center text-gray-700">Y</td>
+                        <td className="px-6 py-3 text-center text-gray-700">{parent.urutan}</td>
+                        <td className="px-6 py-3 text-gray-500">{hasChildren ? 'dropdown' : ''}</td>
+                        <td className="px-6 py-3 text-gray-500">{hasChildren ? 'fa fa-angle-down' : ''}</td>
+                        <td className="px-6 py-3">
+                          <div className="flex items-center justify-center gap-1">
                             <Link 
-                              href={`/admin/menu/edit/${child.id}`}
-                              className="bg-blue-100 text-blue-600 w-7 h-7 rounded hover:bg-blue-200 flex items-center justify-center"
+                              href={`/admin/menu/edit/${parent.id}`}
+                              className="bg-gray-100 text-gray-700 w-8 h-8 rounded border border-gray-200 hover:bg-gray-200 flex items-center justify-center transition"
+                              title="Edit"
                             >
                               <i className="fas fa-edit text-xs"></i>
                             </Link>
                             <button 
-                              onClick={() => hapusMenu(child.id)}
-                              className="bg-red-100 text-red-600 w-7 h-7 rounded hover:bg-red-200 flex items-center justify-center"
+                              onClick={() => hapusMenu(parent.id)}
+                              className="bg-gray-100 text-gray-700 w-8 h-8 rounded border border-gray-200 hover:bg-red-100 hover:text-red-600 hover:border-red-200 flex items-center justify-center transition"
+                              title="Hapus"
                             >
-                              <i className="fas fa-trash text-xs"></i>
+                              <i className="fas fa-times text-xs"></i>
                             </button>
                           </div>
-                        </div>
+                        </td>
+                      </tr>
+                      {/* Render Children */}
+                      {hasChildren && parent.children.map((child: any) => (
+                        <tr key={child.id} className="bg-gray-50/50 border-b border-gray-100 hover:bg-gray-50 transition">
+                          <td className="px-6 py-3 font-medium text-gray-600 pl-10 flex items-center gap-2">
+                            <i className="fas fa-level-up-alt rotate-90 text-gray-300 text-xs"></i> {child.nama}
+                          </td>
+                          <td className="px-6 py-3 text-gray-500">{child.link}</td>
+                          <td className="px-6 py-3 text-center text-gray-700">Y</td>
+                          <td className="px-6 py-3 text-center text-gray-700">{child.urutan}</td>
+                          <td className="px-6 py-3 text-gray-500"></td>
+                          <td className="px-6 py-3 text-gray-500"></td>
+                          <td className="px-6 py-3">
+                            <div className="flex items-center justify-center gap-1">
+                              <Link 
+                                href={`/admin/menu/edit/${child.id}`}
+                                className="bg-gray-100 text-gray-700 w-8 h-8 rounded border border-gray-200 hover:bg-gray-200 flex items-center justify-center transition"
+                                title="Edit"
+                              >
+                                <i className="fas fa-edit text-xs"></i>
+                              </Link>
+                              <button 
+                                onClick={() => hapusMenu(child.id)}
+                                className="bg-gray-100 text-gray-700 w-8 h-8 rounded border border-gray-200 hover:bg-red-100 hover:text-red-600 hover:border-red-200 flex items-center justify-center transition"
+                                title="Hapus"
+                              >
+                                <i className="fas fa-times text-xs"></i>
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
                       ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-            ))}
+                    </React.Fragment>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
         )}
       </div>
