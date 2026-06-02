@@ -1,11 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 
 export default function AdminMenu() {
-  const [menus, setMenus] = useState<any[]>([]);
+  const [parentMenus, setParentMenus] = useState<any[]>([]);
+  const [childMenus, setChildMenus] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -13,132 +14,173 @@ export default function AdminMenu() {
   }, []);
 
   async function fetchMenus() {
-    // Fetch all menus, ordered by urutan
     const { data, error } = await supabase
       .from('menu_navigasi')
       .select('*')
-      .order('parent_id', { ascending: true, nullsFirst: true })
       .order('urutan', { ascending: true });
     
     if (data) {
-      // Reorganize into parent-child structure for display
-      const parentMenus = data.filter(m => !m.parent_id);
-      const childMenus = data.filter(m => m.parent_id);
+      const parents = data.filter(m => !m.parent_id).sort((a, b) => a.urutan - b.urutan);
+      const children = data.filter(m => m.parent_id).sort((a, b) => a.urutan - b.urutan);
       
-      const structuredMenus = parentMenus.map(parent => ({
-        ...parent,
-        children: childMenus.filter(child => child.parent_id === parent.id).sort((a, b) => a.urutan - b.urutan)
-      })).sort((a, b) => a.urutan - b.urutan);
-
-      setMenus(structuredMenus);
+      setParentMenus(parents);
+      setChildMenus(children);
     }
     setLoading(false);
   }
 
-  async function hapusMenu(id: string) {
-    if (confirm('Yakin ingin menghapus menu ini? (Sub-menu juga akan terhapus)')) {
+  async function hapusMenu(id: string, isParent: boolean) {
+    const message = isParent 
+      ? 'Yakin ingin menghapus Main Menu ini? (Sub-menu yang terhubung mungkin akan error atau ikut terhapus)' 
+      : 'Yakin ingin menghapus Sub Menu ini?';
+      
+    if (confirm(message)) {
       await supabase.from('menu_navigasi').delete().eq('id', id);
       fetchMenus();
     }
   }
 
+  // Helper to find parent name
+  const getParentName = (parentId: string) => {
+    const parent = parentMenus.find(p => p.id === parentId);
+    return parent ? parent.nama : '-';
+  };
+
   return (
-    <div>
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Kelola Menu Navigasi</h1>
-        <Link href="/admin/menu/tambah" className="bg-green-700 hover:bg-green-800 text-white px-4 py-2 rounded-lg text-sm font-semibold transition">
-          <i className="fas fa-plus mr-2"></i> Tambah Menu
-        </Link>
+    <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-3xl font-black text-slate-900">Menu Navigasi</h1>
+          <p className="text-slate-500 mt-1">Kelola main menu dan sub menu website.</p>
+        </div>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-        {loading ? (
-          <div className="text-center text-gray-500 py-8">Memuat data...</div>
-        ) : menus.length === 0 ? (
-          <div className="text-center text-gray-500 py-8">Belum ada menu yang ditambahkan.</div>
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm text-left text-gray-600">
-              <thead className="text-xs text-gray-700 uppercase bg-gray-50 border-b border-gray-200">
-                <tr>
-                  <th scope="col" className="px-6 py-4 font-bold">Nama <span className="text-blue-500 ml-1">▲</span></th>
-                  <th scope="col" className="px-6 py-4 font-bold">Link <span className="text-gray-300 ml-1">◆</span></th>
-                  <th scope="col" className="px-6 py-4 font-bold text-center">Aktif <span className="text-gray-300 ml-1">◆</span></th>
-                  <th scope="col" className="px-6 py-4 font-bold text-center">Urutan <span className="text-gray-300 ml-1">◆</span></th>
-                  <th scope="col" className="px-6 py-4 font-bold">Class <span className="text-gray-300 ml-1">◆</span></th>
-                  <th scope="col" className="px-6 py-4 font-bold">Icon <span className="text-gray-300 ml-1">◆</span></th>
-                  <th scope="col" className="px-6 py-4 font-bold text-center w-28">Aksi</th>
-                </tr>
-              </thead>
-              <tbody>
-                {menus.map((parent) => {
-                  const hasChildren = parent.children && parent.children.length > 0;
-                  return (
-                    <React.Fragment key={parent.id}>
-                      <tr className="bg-white border-b border-gray-100 hover:bg-gray-50 transition">
-                        <td className="px-6 py-3 font-medium text-gray-900">{parent.nama}</td>
-                        <td className="px-6 py-3 text-gray-500">{parent.link}</td>
-                        <td className="px-6 py-3 text-center text-gray-700">Y</td>
-                        <td className="px-6 py-3 text-center text-gray-700">{parent.urutan}</td>
-                        <td className="px-6 py-3 text-gray-500">{hasChildren ? 'dropdown' : ''}</td>
-                        <td className="px-6 py-3 text-gray-500">{hasChildren ? 'fa fa-angle-down' : ''}</td>
-                        <td className="px-6 py-3">
-                          <div className="flex items-center justify-center gap-1">
-                            <Link 
-                              href={`/admin/menu/edit/${parent.id}`}
-                              className="bg-gray-100 text-gray-700 w-8 h-8 rounded border border-gray-200 hover:bg-gray-200 flex items-center justify-center transition"
-                              title="Edit"
-                            >
-                              <i className="fas fa-edit text-xs"></i>
-                            </Link>
-                            <button 
-                              onClick={() => hapusMenu(parent.id)}
-                              className="bg-gray-100 text-gray-700 w-8 h-8 rounded border border-gray-200 hover:bg-red-100 hover:text-red-600 hover:border-red-200 flex items-center justify-center transition"
-                              title="Hapus"
-                            >
-                              <i className="fas fa-times text-xs"></i>
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                      {/* Render Children */}
-                      {hasChildren && parent.children.map((child: any) => (
-                        <tr key={child.id} className="bg-gray-50/50 border-b border-gray-100 hover:bg-gray-50 transition">
-                          <td className="px-6 py-3 font-medium text-gray-600 pl-10 flex items-center gap-2">
-                            <i className="fas fa-level-up-alt rotate-90 text-gray-300 text-xs"></i> {child.nama}
-                          </td>
-                          <td className="px-6 py-3 text-gray-500">{child.link}</td>
-                          <td className="px-6 py-3 text-center text-gray-700">Y</td>
-                          <td className="px-6 py-3 text-center text-gray-700">{child.urutan}</td>
-                          <td className="px-6 py-3 text-gray-500"></td>
-                          <td className="px-6 py-3 text-gray-500"></td>
-                          <td className="px-6 py-3">
-                            <div className="flex items-center justify-center gap-1">
-                              <Link 
-                                href={`/admin/menu/edit/${child.id}`}
-                                className="bg-gray-100 text-gray-700 w-8 h-8 rounded border border-gray-200 hover:bg-gray-200 flex items-center justify-center transition"
-                                title="Edit"
-                              >
-                                <i className="fas fa-edit text-xs"></i>
-                              </Link>
-                              <button 
-                                onClick={() => hapusMenu(child.id)}
-                                className="bg-gray-100 text-gray-700 w-8 h-8 rounded border border-gray-200 hover:bg-red-100 hover:text-red-600 hover:border-red-200 flex items-center justify-center transition"
-                                title="Hapus"
-                              >
-                                <i className="fas fa-times text-xs"></i>
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                      ))}
-                    </React.Fragment>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        )}
+      {/* ---------------- MAIN MENU SECTION ---------------- */}
+      <div>
+        <div className="flex justify-between items-end mb-4">
+          <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2">
+            <i className="fas fa-folder text-[#00a676]"></i> Main Menu
+          </h2>
+          <Link href="/admin/menu/tambah" className="flex items-center space-x-2 bg-[#00a676] hover:bg-[#008f65] text-white px-4 py-2 rounded-xl text-sm font-bold shadow-md transition-all active:scale-95">
+            <i className="fas fa-plus"></i>
+            <span>Tambah Main Menu</span>
+          </Link>
+        </div>
+        
+        <div className="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm">
+          {loading ? (
+            <div className="text-center text-slate-500 py-12 font-medium italic">Memuat data...</div>
+          ) : parentMenus.length === 0 ? (
+            <div className="p-12 text-center text-slate-400 font-medium italic">Belum ada Main Menu.</div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-sm text-slate-600">
+                <thead className="bg-slate-50 border-b border-slate-200 text-xs text-slate-700 uppercase">
+                  <tr>
+                    <th className="px-6 py-4 font-black tracking-widest">Nama <span className="text-blue-500 ml-1">▲</span></th>
+                    <th className="px-6 py-4 font-black tracking-widest">Link <span className="text-slate-300 ml-1">◆</span></th>
+                    <th className="px-6 py-4 font-black text-center tracking-widest">Urutan <span className="text-slate-300 ml-1">◆</span></th>
+                    <th className="px-6 py-4 font-black tracking-widest">Class <span className="text-slate-300 ml-1">◆</span></th>
+                    <th className="px-6 py-4 font-black tracking-widest text-right">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {parentMenus.map((item) => (
+                    <tr key={item.id} className="bg-white hover:bg-slate-50 transition-colors">
+                      <td className="px-6 py-4 font-bold text-slate-900">{item.nama}</td>
+                      <td className="px-6 py-4 font-medium text-slate-500">{item.link}</td>
+                      <td className="px-6 py-4 font-mono text-slate-700 text-center">{item.urutan}</td>
+                      <td className="px-6 py-4 text-slate-500">{item.class || '-'}</td>
+                      <td className="px-6 py-4 text-right">
+                        <div className="flex items-center justify-end space-x-1">
+                          <Link 
+                            href={`/admin/menu/edit/${item.id}`}
+                            className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all"
+                            title="Edit"
+                          >
+                            <i className="fas fa-edit"></i>
+                          </Link>
+                          <button 
+                            onClick={() => hapusMenu(item.id, true)}
+                            className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
+                            title="Hapus"
+                          >
+                            <i className="fas fa-trash-alt"></i>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* ---------------- SUB MENU SECTION ---------------- */}
+      <div>
+        <div className="flex justify-between items-end mb-4">
+          <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2">
+            <i className="fas fa-file-alt text-blue-600"></i> Sub Menu
+          </h2>
+          <Link href="/admin/menu/tambah?type=sub" className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-md transition-all active:scale-95">
+            <i className="fas fa-plus"></i>
+            <span>Tambah Sub Menu</span>
+          </Link>
+        </div>
+
+        <div className="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm">
+          {loading ? (
+            <div className="text-center text-slate-500 py-12 font-medium italic">Memuat data...</div>
+          ) : childMenus.length === 0 ? (
+            <div className="p-12 text-center text-slate-400 font-medium italic">Belum ada Sub Menu.</div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-sm text-slate-600">
+                <thead className="bg-slate-50 border-b border-slate-200 text-xs text-slate-700 uppercase">
+                  <tr>
+                    <th className="px-6 py-4 font-black tracking-widest">Nama Sub Menu <span className="text-blue-500 ml-1">▲</span></th>
+                    <th className="px-6 py-4 font-black tracking-widest">Induk (Main Menu) <span className="text-slate-300 ml-1">◆</span></th>
+                    <th className="px-6 py-4 font-black tracking-widest">Link <span className="text-slate-300 ml-1">◆</span></th>
+                    <th className="px-6 py-4 font-black text-center tracking-widest">Urutan <span className="text-slate-300 ml-1">◆</span></th>
+                    <th className="px-6 py-4 font-black tracking-widest text-right">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {childMenus.map((item) => (
+                    <tr key={item.id} className="bg-white hover:bg-slate-50 transition-colors">
+                      <td className="px-6 py-4 font-bold text-slate-900">{item.nama}</td>
+                      <td className="px-6 py-4 font-bold text-blue-600 bg-blue-50/50">
+                        {getParentName(item.parent_id)}
+                      </td>
+                      <td className="px-6 py-4 font-medium text-slate-500">{item.link}</td>
+                      <td className="px-6 py-4 font-mono text-slate-700 text-center">{item.urutan}</td>
+                      <td className="px-6 py-4 text-right">
+                        <div className="flex items-center justify-end space-x-1">
+                          <Link 
+                            href={`/admin/menu/edit/${item.id}`}
+                            className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all"
+                            title="Edit"
+                          >
+                            <i className="fas fa-edit"></i>
+                          </Link>
+                          <button 
+                            onClick={() => hapusMenu(item.id, false)}
+                            className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
+                            title="Hapus"
+                          >
+                            <i className="fas fa-trash-alt"></i>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
