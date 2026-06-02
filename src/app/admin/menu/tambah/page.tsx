@@ -1,12 +1,14 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 
 export default function TambahMenu() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const isSubMenu = searchParams.get('type') === 'sub';
   const [loading, setLoading] = useState(false);
   const [parentMenus, setParentMenus] = useState<any[]>([]);
   const [formData, setFormData] = useState({

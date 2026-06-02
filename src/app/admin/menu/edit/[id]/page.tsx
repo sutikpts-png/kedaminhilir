@@ -79,6 +79,8 @@ export default function EditMenu() {
 
   if (fetching) return <div className="p-8 text-center">Memuat data...</div>;
 
+  const isSubMenu = !!formData.parent_id;
+
   return (
     <div className="max-w-2xl">
       <div className="flex items-center gap-3 mb-6">
