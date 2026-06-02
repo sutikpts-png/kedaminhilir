@@ -64,6 +64,9 @@ export default function AdminLayout({
                 <Link href="/admin/berita" className="block px-4 py-2 pl-10 rounded hover:bg-green-800 transition text-sm">
                   <i className="fas fa-angle-right w-4"></i> Berita
                 </Link>
+                <Link href="/admin/produk-hukum" className="block px-4 py-2 pl-10 rounded hover:bg-green-800 transition text-sm">
+                  <i className="fas fa-angle-right w-4"></i> Produk Hukum
+                </Link>
                 <Link href="/admin/layanan" className="block px-4 py-2 pl-10 rounded hover:bg-green-800 transition text-sm">
                   <i className="fas fa-angle-right w-4"></i> Layanan
                 </Link>
