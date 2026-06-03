@@ -8,6 +8,8 @@ export default function AdminGaleri() {
   const [galeri, setGaleri] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedItem, setSelectedItem] = useState<any>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   useEffect(() => {
     fetchGaleri();
@@ -29,6 +31,9 @@ export default function AdminGaleri() {
       fetchGaleri();
     }
   }
+
+  const totalPages = Math.ceil(galeri.length / itemsPerPage);
+  const currentItems = galeri.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   return (
     <div>
@@ -56,7 +61,7 @@ export default function AdminGaleri() {
                 </tr>
               </thead>
               <tbody>
-                {galeri.map((item) => (
+                {currentItems.map((item) => (
                   <tr key={item.id} className="border-b border-gray-100 hover:bg-gray-50 transition">
                     <td className="p-4">
                       <div className="w-24 h-16 rounded overflow-hidden bg-gray-100 relative cursor-pointer group" onClick={() => setSelectedItem(item)}>
@@ -101,6 +106,42 @@ export default function AdminGaleri() {
                 ))}
               </tbody>
             </table>
+          </div>
+        )}
+
+        {/* Pagination */}
+        {totalPages > 1 && !loading && galeri.length > 0 && (
+          <div className="flex justify-between items-center mt-6">
+            <div className="text-sm text-gray-500">
+              Menampilkan {((currentPage - 1) * itemsPerPage) + 1} - {Math.min(currentPage * itemsPerPage, galeri.length)} dari {galeri.length} media
+            </div>
+            <div className="flex gap-1">
+              <button 
+                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))} 
+                disabled={currentPage === 1}
+                className="w-8 h-8 rounded flex items-center justify-center border border-gray-200 disabled:opacity-50 hover:bg-gray-50 transition"
+              >
+                <i className="fas fa-chevron-left text-xs"></i>
+              </button>
+              
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                <button 
+                  key={page}
+                  onClick={() => setCurrentPage(page)}
+                  className={`w-8 h-8 rounded flex items-center justify-center text-sm font-semibold transition ${currentPage === page ? 'bg-green-700 text-white' : 'border border-gray-200 hover:bg-gray-50 text-gray-700'}`}
+                >
+                  {page}
+                </button>
+              ))}
+
+              <button 
+                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))} 
+                disabled={currentPage === totalPages}
+                className="w-8 h-8 rounded flex items-center justify-center border border-gray-200 disabled:opacity-50 hover:bg-gray-50 transition"
+              >
+                <i className="fas fa-chevron-right text-xs"></i>
+              </button>
+            </div>
           </div>
         )}
       </div>
