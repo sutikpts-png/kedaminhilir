@@ -9,7 +9,7 @@ import PublicOnly from "@/components/PublicOnly";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Kelurahan Kedamin Hilir - Kecamatan Pakem, Sleman",
+  title: "Kelurahan Kedamin Hilir - Kecamatan Putussibau Selatan, Kapuas Hulu",
   description: "Portal resmi Kelurahan Kedamin Hilir",
   icons: {
     icon: '/icon.png?v=2',
