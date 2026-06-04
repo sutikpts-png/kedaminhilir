@@ -14,19 +14,9 @@ export default function HeroSection({ web, sliders }: { web: any, sliders: any[]
   // Fallback to global setting if no sliders active
   const hasSliders = sliders && sliders.length > 0;
   
-  // Current text to display based on active slide or fallback
-  let currentTitle = web?.hero_title || 'Selamat Datang di<br/><span class="text-yellow-300">Kelurahan Kedamin Hilir</span>';
-  let currentSubtitle = web?.hero_subtitle || 'Melayani masyarakat dengan tulus, transparan, dan profesional demi terwujudnya kelurahan yang maju, sejahtera, dan berdaya saing.';
-
-  if (hasSliders && sliders[activeIndex]) {
-    const slide = sliders[activeIndex];
-    if (slide.judul && slide.judul.trim() !== '') {
-      currentTitle = slide.judul;
-    }
-    if (slide.deskripsi && slide.deskripsi.trim() !== '') {
-      currentSubtitle = slide.deskripsi;
-    }
-  }
+  // Current text to display based on global setting
+  const currentTitle = web?.hero_title || 'Selamat Datang di<br/><span class="text-yellow-300">Kelurahan Kedamin Hilir</span>';
+  const currentSubtitle = web?.hero_subtitle || 'Melayani masyarakat dengan tulus, transparan, dan profesional demi terwujudnya kelurahan yang maju, sejahtera, dan berdaya saing.';
 
   // Determine images array
   let images = ['/assets/img/hero-bg.jpg'];
