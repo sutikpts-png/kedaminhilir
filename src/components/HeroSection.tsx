@@ -70,11 +70,13 @@ export default function HeroSection({ web, sliders }: { web: any, sliders: any[]
             fadeEffect={{ crossFade: true }}
             speed={1500}
             autoplay={{
-              delay: 8000,
+              delay: 5000,
               disableOnInteraction: false,
             }}
             loop={true}
             allowTouchMove={false}
+            observer={true}
+            observeParents={true}
             onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
             className="w-full h-full"
           >
