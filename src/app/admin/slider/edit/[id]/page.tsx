@@ -16,7 +16,6 @@ export default function EditSlider() {
   
   const [formData, setFormData] = useState({
     judul: '',
-    deskripsi: '',
     is_active: true,
     urutan: 0,
     image_url: ''
@@ -36,7 +35,6 @@ export default function EditSlider() {
     if (data) {
       setFormData({
         judul: data.judul || '',
-        deskripsi: data.deskripsi || '',
         is_active: data.is_active,
         urutan: data.urutan,
         image_url: data.image_url
@@ -89,7 +87,6 @@ export default function EditSlider() {
         .from('slider_banner')
         .update({
           judul: formData.judul,
-          deskripsi: formData.deskripsi,
           is_active: formData.is_active,
           urutan: parseInt(formData.urutan.toString()),
           image_url: finalImageUrl
@@ -138,24 +135,13 @@ export default function EditSlider() {
         </div>
 
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-1">Judul (Text Atas)</label>
+          <label className="block text-sm font-semibold text-gray-700 mb-1">Judul</label>
           <input 
             type="text" 
             name="judul" 
             value={formData.judul} 
             onChange={handleChange} 
             placeholder="Mendukung tag HTML sederhana seperti <br/>"
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none" 
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-1">Deskripsi (Text Bawah)</label>
-          <textarea 
-            name="deskripsi" 
-            rows={3}
-            value={formData.deskripsi} 
-            onChange={handleChange} 
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none" 
           />
         </div>

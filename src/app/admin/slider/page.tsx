@@ -68,8 +68,7 @@ export default function PengaturanSlider() {
             <thead>
               <tr className="bg-gray-50 border-b border-gray-200 text-sm">
                 <th className="p-4 font-semibold text-gray-600">Background</th>
-                <th className="p-4 font-semibold text-gray-600">Text Atas</th>
-                <th className="p-4 font-semibold text-gray-600">Text Bawah</th>
+                <th className="p-4 font-semibold text-gray-600">Judul</th>
                 <th className="p-4 font-semibold text-gray-600 text-center">Aktif</th>
                 <th className="p-4 font-semibold text-gray-600 text-center">Urutan</th>
                 <th className="p-4 font-semibold text-gray-600 text-center">Aksi</th>
@@ -78,11 +77,11 @@ export default function PengaturanSlider() {
             <tbody className="divide-y divide-gray-100">
               {loading ? (
                 <tr>
-                  <td colSpan={6} className="p-8 text-center text-gray-500">Memuat data slider...</td>
+                  <td colSpan={5} className="p-8 text-center text-gray-500">Memuat data slider...</td>
                 </tr>
               ) : sliders.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="p-8 text-center text-gray-500">
+                  <td colSpan={5} className="p-8 text-center text-gray-500">
                     <i className="fas fa-images text-3xl mb-3 text-gray-300 block"></i>
                     Belum ada data slide. Klik "Tambah Slide" untuk memulai.
                   </td>
@@ -101,9 +100,6 @@ export default function PengaturanSlider() {
                     </td>
                     <td className="p-4 align-top">
                       <div className="font-semibold text-sm text-gray-900 line-clamp-2" dangerouslySetInnerHTML={{ __html: slide.judul || '-' }} />
-                    </td>
-                    <td className="p-4 align-top">
-                      <p className="text-sm text-gray-600 line-clamp-2">{slide.deskripsi || '-'}</p>
                     </td>
                     <td className="p-4 text-center">
                       <button 

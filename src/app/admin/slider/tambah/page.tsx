@@ -13,7 +13,6 @@ export default function TambahSlider() {
   
   const [formData, setFormData] = useState({
     judul: '',
-    deskripsi: '',
     is_active: true,
     urutan: 0
   });
@@ -60,7 +59,6 @@ export default function TambahSlider() {
       const { error: dbError } = await supabase.from('slider_banner').insert([
         {
           judul: formData.judul,
-          deskripsi: formData.deskripsi,
           is_active: formData.is_active,
           urutan: parseInt(formData.urutan.toString()),
           image_url: imageUrl
@@ -105,24 +103,13 @@ export default function TambahSlider() {
         </div>
 
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-1">Judul (Text Atas)</label>
+          <label className="block text-sm font-semibold text-gray-700 mb-1">Judul</label>
           <input 
             type="text" 
             name="judul" 
             value={formData.judul} 
             onChange={handleChange} 
             placeholder="Mendukung tag HTML sederhana seperti <br/>"
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none" 
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-1">Deskripsi (Text Bawah)</label>
-          <textarea 
-            name="deskripsi" 
-            rows={3}
-            value={formData.deskripsi} 
-            onChange={handleChange} 
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none" 
           />
         </div>
