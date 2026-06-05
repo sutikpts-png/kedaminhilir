@@ -37,7 +37,7 @@ export default function AdminProdukHukum() {
           <p className="text-slate-500 mt-1">Kelola arsip produk hukum dan dokumen PDF.</p>
         </div>
         <div className="flex gap-2">
-          <Link href="/admin/produk-hukum/tambah" className="flex items-center space-x-2 bg-[#00a676] hover:bg-[#008f65] text-white px-4 py-2 rounded-xl font-bold shadow-lg transition-all active:scale-95">
+          <Link href="/admin/produk-hukum/tambah" className="flex items-center space-x-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-xl font-bold shadow-lg transition-all active:scale-95">
             <i className="fas fa-plus"></i>
             <span>Tambah Produk Hukum</span>
           </Link>

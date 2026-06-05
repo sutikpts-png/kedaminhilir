@@ -44,9 +44,9 @@ export default function AdminMainMenu() {
       <div>
         <div className="flex justify-between items-end mb-4">
           <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2">
-            <i className="fas fa-folder text-[#00a676]"></i> Daftar Main Menu
+            <i className="fas fa-folder text-green-600"></i> Daftar Main Menu
           </h2>
-          <Link href="/admin/menu/tambah" className="flex items-center space-x-2 bg-[#00a676] hover:bg-[#008f65] text-white px-4 py-2 rounded-xl text-sm font-bold shadow-md transition-all active:scale-95">
+          <Link href="/admin/menu/tambah" className="flex items-center space-x-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-md transition-all active:scale-95">
             <i className="fas fa-plus"></i>
             <span>Tambah Main Menu</span>
           </Link>
