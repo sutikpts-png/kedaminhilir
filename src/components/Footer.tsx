@@ -67,7 +67,7 @@ export default async function Footer() {
             <ul className="text-xs space-y-2 text-gray-400">
               <li><i className="fas fa-map-marker-alt text-yellow-400 mr-2"></i> {alamat}</li>
               <li><i className="fas fa-phone text-yellow-400 mr-2"></i> {telepon}</li>
-              <li><i className="fas fa-envelope text-yellow-400 mr-2"></i> {email}</li>
+              <li className="break-all"><i className="fas fa-envelope text-yellow-400 mr-2"></i> {email}</li>
               <li><i className="fas fa-clock text-yellow-400 mr-2"></i> {jam_operasional}</li>
             </ul>
             <div className="flex gap-3 pt-2">

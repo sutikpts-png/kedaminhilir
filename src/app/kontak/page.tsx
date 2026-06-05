@@ -88,7 +88,7 @@ export default async function KontakPage() {
                   </div>
                   <div>
                     <h4 className="font-bold text-gray-900">Email</h4>
-                    <p className="text-gray-600 text-sm mt-1">{web?.email || 'kedaminhilir@slemankab.go.id'}</p>
+                    <p className="text-gray-600 text-sm mt-1 break-all">{web?.email || 'kedaminhilir@slemankab.go.id'}</p>
                   </div>
                 </div>
                 
