@@ -61,44 +61,50 @@ export default async function KontakPage() {
                 </p>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center flex-shrink-0">
-                    <i className="fas fa-map-marker-alt text-xl"></i>
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+                {/* Kolom Kiri: Alamat & Email (Lebih lebar) */}
+                <div className="md:col-span-7 space-y-8">
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center flex-shrink-0">
+                      <i className="fas fa-map-marker-alt text-xl"></i>
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-gray-900">Alamat Kantor</h4>
+                      <p className="text-gray-600 text-sm mt-1">{web?.alamat || 'Jl. Kaliurang Km. 17, Kedamin Hilir, Pakem, Sleman 55582'}</p>
+                    </div>
                   </div>
-                  <div>
-                    <h4 className="font-bold text-gray-900">Alamat Kantor</h4>
-                    <p className="text-gray-600 text-sm mt-1">{web?.alamat || 'Jl. Kaliurang Km. 17, Kedamin Hilir, Pakem, Sleman 55582'}</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
-                    <i className="fas fa-phone-alt text-xl"></i>
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-gray-900">Telepon</h4>
-                    <p className="text-gray-600 text-sm mt-1">{web?.telepon || '(0274) 895123'}</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center flex-shrink-0">
-                    <i className="fas fa-envelope text-xl"></i>
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-gray-900">Email</h4>
-                    <p className="text-gray-600 text-sm mt-1 break-all">{web?.email || 'kedaminhilir@slemankab.go.id'}</p>
+                  
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center flex-shrink-0">
+                      <i className="fas fa-envelope text-xl"></i>
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-gray-900">Email</h4>
+                      <p className="text-gray-600 text-sm mt-1">{web?.email || 'kedaminhilir@slemankab.go.id'}</p>
+                    </div>
                   </div>
                 </div>
                 
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
-                    <i className="fas fa-clock text-xl"></i>
+                {/* Kolom Kanan: Telepon & Jam Layanan (Lebih sempit) */}
+                <div className="md:col-span-5 space-y-8">
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
+                      <i className="fas fa-phone-alt text-xl"></i>
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-gray-900">Telepon</h4>
+                      <p className="text-gray-600 text-sm mt-1">{web?.telepon || '(0274) 895123'}</p>
+                    </div>
                   </div>
-                  <div>
-                    <h4 className="font-bold text-gray-900">Jam Layanan</h4>
-                    <p className="text-gray-600 text-sm mt-1">{web?.jam_operasional || 'Senin - Jumat: 08:00 - 15:00 WIB'}</p>
+                  
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
+                      <i className="fas fa-clock text-xl"></i>
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-gray-900">Jam Layanan</h4>
+                      <p className="text-gray-600 text-sm mt-1">{web?.jam_operasional || 'Senin - Jumat: 08:00 - 15:00 WIB'}</p>
+                    </div>
                   </div>
                 </div>
               </div>
