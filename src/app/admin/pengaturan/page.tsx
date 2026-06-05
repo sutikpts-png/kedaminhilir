@@ -159,12 +159,22 @@ export default function PengaturanWeb() {
             </div>
             <div className="md:col-span-2">
               <label className="block text-sm font-semibold text-gray-700 mb-1">Tema Warna Website</label>
-              <select name="tema_warna" value={formData.tema_warna} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none">
-                <option value="original">Original (Hijau)</option>
-                <option value="maroon">Merah Marun Gradiasi</option>
-                <option value="navy">Biru Dongker Gradiasi</option>
-              </select>
-              <p className="text-xs text-gray-500 mt-1">Pilih tema warna utama yang akan diterapkan pada seluruh halaman website.</p>
+              <div className="flex items-center gap-3">
+                <div 
+                  className={`w-10 h-10 rounded-lg shadow-sm shrink-0 transition-colors duration-300 ${
+                    formData.tema_warna === 'maroon' ? 'bg-gradient-to-r from-red-900 to-red-800 border border-red-950' :
+                    formData.tema_warna === 'navy' ? 'bg-gradient-to-r from-blue-950 to-blue-900 border border-slate-900' :
+                    'bg-gradient-to-r from-green-900 to-green-800 border border-green-950'
+                  }`}
+                  title="Pratinjau Warna Tema"
+                ></div>
+                <select name="tema_warna" value={formData.tema_warna} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none">
+                  <option value="original">Original (Hijau)</option>
+                  <option value="maroon">Merah Marun Gradiasi</option>
+                  <option value="navy">Biru Dongker Gradiasi</option>
+                </select>
+              </div>
+              <p className="text-xs text-gray-500 mt-1">Pilih tema warna utama yang akan diterapkan pada seluruh halaman website. Kotak warna di sebelah kiri menunjukkan pratinjau warna tema.</p>
             </div>
           </div>
           
