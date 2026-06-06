@@ -45,59 +45,76 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
-      <div className="max-w-md w-full bg-white rounded-2xl shadow-xl overflow-hidden">
-        <div className="bg-green-900 p-6 text-center">
-          <h2 className="text-2xl font-bold text-white">Login Admin</h2>
-          <p className="text-green-200 mt-1 text-sm">Kelurahan Kedamin Hilir</p>
-        </div>
-        
-        <div className="p-8">
-          {errorMsg && (
-            <div className="bg-red-50 text-red-600 p-3 rounded-lg text-sm mb-4 border border-red-100">
-              {errorMsg}
-            </div>
-          )}
+    <div className="min-h-screen flex flex-col bg-gray-50">
+      <div className="flex-grow flex items-center justify-center p-4">
+        <div className="max-w-md w-full bg-white rounded-2xl shadow-xl overflow-hidden">
+          <div className="bg-green-900 p-6 text-center">
+            <h2 className="text-2xl font-bold text-white">Login Admin</h2>
+            <p className="text-green-200 mt-1 text-sm">Kelurahan Kedamin Hilir</p>
+          </div>
           
-          <form onSubmit={handleLogin} className="space-y-5">
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-1">Username</label>
-              <input 
-                type="text" 
-                required 
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none transition"
-                placeholder="Masukkan username"
-              />
+          <div className="p-8">
+            {errorMsg && (
+              <div className="bg-red-50 text-red-600 p-3 rounded-lg text-sm mb-4 border border-red-100">
+                {errorMsg}
+              </div>
+            )}
+            
+            <form onSubmit={handleLogin} className="space-y-5">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1">Username</label>
+                <input 
+                  type="text" 
+                  required 
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none transition"
+                  placeholder="Masukkan username"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1">Password</label>
+                <input 
+                  type="password" 
+                  required 
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none transition"
+                  placeholder="••••••••"
+                />
+              </div>
+              <button 
+                type="submit" 
+                disabled={loading}
+                className="w-full bg-green-700 hover:bg-green-800 disabled:opacity-50 text-white font-bold py-3 px-4 rounded-lg transition"
+              >
+                {loading ? 'Memeriksa...' : 'Masuk ke Dashboard'}
+              </button>
+            </form>
+            
+            <div className="mt-6 text-center">
+              <Link href="/" className="text-sm text-green-700 hover:underline">
+                <i className="fas fa-arrow-left mr-1"></i> Kembali ke Beranda
+              </Link>
             </div>
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-1">Password</label>
-              <input 
-                type="password" 
-                required 
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none transition"
-                placeholder="••••••••"
-              />
-            </div>
-            <button 
-              type="submit" 
-              disabled={loading}
-              className="w-full bg-green-700 hover:bg-green-800 disabled:opacity-50 text-white font-bold py-3 px-4 rounded-lg transition"
-            >
-              {loading ? 'Memeriksa...' : 'Masuk ke Dashboard'}
-            </button>
-          </form>
-          
-          <div className="mt-6 text-center">
-            <Link href="/" className="text-sm text-green-700 hover:underline">
-              <i className="fas fa-arrow-left mr-1"></i> Kembali ke Beranda
-            </Link>
           </div>
         </div>
       </div>
+
+      {/* Footer */}
+      <footer className="bg-[#f4f7f9] border-t border-gray-200 py-6 px-4 md:px-12 mt-auto">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-sm">
+          <div className="mb-4 md:mb-0 text-center md:text-left">
+            <p className="font-bold text-gray-800 mb-1">KELURAHAN KEDAMIN HILIR</p>
+            <p className="text-gray-600">© 2026 Pemerintah Kabupaten Kapuas Hulu. Hak Cipta Dilindungi.</p>
+          </div>
+          <div className="flex space-x-6 text-gray-600">
+            <Link href="#" className="hover:text-gray-900 underline decoration-gray-400 underline-offset-2">Kebijakan Privasi</Link>
+            <Link href="#" className="hover:text-gray-900 underline decoration-gray-400 underline-offset-2">Syarat & Ketentuan</Link>
+            <Link href="#" className="hover:text-gray-900 underline decoration-gray-400 underline-offset-2">Bantuan</Link>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
