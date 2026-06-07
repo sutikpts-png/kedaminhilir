@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { supabase } from '@/lib/supabase';
 
 export default function AdminBerita() {
@@ -45,6 +46,7 @@ export default function AdminBerita() {
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="bg-gray-50 text-gray-600 text-sm border-b border-gray-200">
+                <th className="p-4 font-semibold w-16">Foto</th>
                 <th className="p-4 font-semibold">Judul</th>
                 <th className="p-4 font-semibold">Kategori</th>
                 <th className="p-4 font-semibold">Tanggal</th>
@@ -54,11 +56,26 @@ export default function AdminBerita() {
             <tbody>
               {berita.length === 0 ? (
                 <tr>
-                  <td colSpan={4} className="p-8 text-center text-gray-500">Belum ada berita.</td>
+                  <td colSpan={5} className="p-8 text-center text-gray-500">Belum ada berita.</td>
                 </tr>
               ) : (
                 berita.map((item) => (
                   <tr key={item.id} className="border-b border-gray-100 hover:bg-gray-50">
+                    <td className="p-4">
+                      <div className="w-14 h-14 rounded-lg overflow-hidden bg-gray-100 flex items-center justify-center flex-shrink-0">
+                        {item.gambar_url ? (
+                          <Image
+                            src={item.gambar_url}
+                            alt={item.judul}
+                            width={56}
+                            height={56}
+                            className="object-cover w-full h-full"
+                          />
+                        ) : (
+                          <i className="fas fa-image text-gray-300 text-xl"></i>
+                        )}
+                      </div>
+                    </td>
                     <td className="p-4 text-sm font-medium text-gray-900">{item.judul}</td>
                     <td className="p-4 text-sm text-gray-500">{item.kategori}</td>
                     <td className="p-4 text-sm text-gray-500">{new Date(item.tanggal_publikasi).toLocaleDateString('id-ID')}</td>
