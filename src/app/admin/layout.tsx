@@ -42,7 +42,7 @@ export default function AdminLayout({
       <aside className="w-64 bg-green-900 text-white flex flex-col hidden md:flex">
         <div className="p-6 border-b border-green-800">
           <h2 className="text-xl font-bold">Admin Panel</h2>
-          <p className="text-xs text-green-300 mt-1">Kelurahan Kedamin Hilir</p>
+          <p className="text-xs text-green-300 mt-1">Kelurahan Putussibau Kota</p>
         </div>
         <nav className="flex-1 p-4 space-y-2">
           <Link href="/admin" className="block px-4 py-2 rounded hover:bg-green-800 transition">

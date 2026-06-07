@@ -24,10 +24,10 @@ export default function Navbar() {
   const [currentTime, setCurrentTime] = useState<Date | null>(null);
   const [menus, setMenus] = useState<any[]>([]);
   const [web, setWeb] = useState<any>({
-    telepon: '(0274) 895123',
-    email: 'kedaminhilir@slemankab.go.id',
-    nama_kelurahan: 'Kedamin Hilir',
-    nama_kecamatan_kabupaten: 'Kecamatan Pakem · Kabupaten Sleman · DIY',
+    telepon: '-',
+    email: 'putussibauk@kapuashulukab.go.id',
+    nama_kelurahan: 'Putussibau Kota',
+    nama_kecamatan_kabupaten: 'Kecamatan Putussibau Utara · Kabupaten Kapuas Hulu · Kalbar',
     link_facebook: '#',
     link_instagram: '#',
     link_youtube: '#'

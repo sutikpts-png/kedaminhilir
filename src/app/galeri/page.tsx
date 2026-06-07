@@ -22,7 +22,7 @@ export default async function GaleriPage() {
             <span className="text-white">Galeri</span>
           </div>
           <h2 className="text-3xl font-extrabold">Galeri Dokumentasi</h2>
-          <p className="text-green-200 mt-2 text-sm">Dokumentasi kegiatan dan momen penting di Kelurahan Kedamin Hilir.</p>
+          <p className="text-green-200 mt-2 text-sm">Dokumentasi kegiatan dan momen penting di Kelurahan Putussibau Kota.</p>
         </div>
       </section>
 

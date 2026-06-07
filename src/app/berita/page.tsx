@@ -2,7 +2,7 @@ import Link from 'next/link';
 import BeritaClient from './BeritaClient';
 
 export const metadata = {
-  title: 'Berita - Kelurahan Kedamin Hilir',
+  title: 'Berita - Kelurahan Putussibau Kota',
 };
 
 export default function BeritaPage() {
@@ -17,7 +17,7 @@ export default function BeritaPage() {
             <span className="text-white">Berita</span>
           </div>
           <h2 className="text-3xl font-extrabold">Berita & Informasi</h2>
-          <p className="text-green-200 mt-2 text-sm">Informasi terkini seputar kegiatan dan pembangunan Kelurahan Kedamin Hilir.</p>
+          <p className="text-green-200 mt-2 text-sm">Informasi terkini seputar kegiatan dan pembangunan Kelurahan Putussibau Kota.</p>
         </div>
       </section>
 

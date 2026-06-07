@@ -26,7 +26,7 @@ export default async function ProdukHukumPage() {
             <span className="text-white">Produk Hukum</span>
           </div>
           <h2 className="text-3xl font-extrabold">Produk Hukum</h2>
-          <p className="text-green-200 mt-2 text-sm">Arsip Peraturan, Keputusan, dan Surat Edaran Kelurahan Kedamin Hilir.</p>
+          <p className="text-green-200 mt-2 text-sm">Arsip Peraturan, Keputusan, dan Surat Edaran Kelurahan Putussibau Kota.</p>
         </div>
       </section>
 

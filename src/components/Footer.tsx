@@ -7,11 +7,11 @@ export const revalidate = 0;
 export default async function Footer() {
   const { data: web } = await supabase.from('pengaturan_web').select('*').eq('id', 1).single();
 
-  const kelurahan = web?.nama_kelurahan || 'Kedamin Hilir';
-  const kecKab = web?.nama_kecamatan_kabupaten || 'Kecamatan Pakem · Kabupaten Sleman · DIY';
-  const alamat = web?.alamat || 'Jl. Kaliurang Km. 17, Kedamin Hilir, Pakem, Sleman 55582';
-  const telepon = web?.telepon || '(0274) 895123';
-  const email = web?.email || 'kedaminhilir@slemankab.go.id';
+  const kelurahan = web?.nama_kelurahan || 'Putussibau Kota';
+  const kecKab = web?.nama_kecamatan_kabupaten || 'Kecamatan Putussibau Utara · Kabupaten Kapuas Hulu · Kalbar';
+  const alamat = web?.alamat || 'Jl. Putussibau, Putussibau Kota, Kapuas Hulu';
+  const telepon = web?.telepon || '-';
+  const email = web?.email || 'putussibauk@kapuashulukab.go.id';
   const jam_operasional = web?.jam_operasional || 'Senin–Jumat: 08.00–16.00 WIB';
   const fb = web?.link_facebook || '#';
   const ig = web?.link_instagram || '#';

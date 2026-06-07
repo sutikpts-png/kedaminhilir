@@ -15,7 +15,7 @@ export default function HeroSection({ web, sliders }: { web: any, sliders: any[]
   const hasSliders = sliders && sliders.length > 0;
   
   // Current text to display based on global setting
-  const currentTitle = web?.hero_title || 'Selamat Datang di<br/><span class="text-yellow-300">Kelurahan Kedamin Hilir</span>';
+  const currentTitle = web?.hero_title || 'Selamat Datang di<br/><span class="text-yellow-300">Kelurahan Putussibau Kota</span>';
   const currentSubtitle = web?.hero_subtitle || 'Melayani masyarakat dengan tulus, transparan, dan profesional demi terwujudnya kelurahan yang maju, sejahtera, dan berdaya saing.';
 
   // Determine images array

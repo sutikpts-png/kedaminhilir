@@ -50,7 +50,7 @@ export default function LoginPage() {
         <div className="max-w-md w-full bg-white rounded-2xl shadow-xl overflow-hidden">
           <div className="bg-green-900 p-6 text-center">
             <h2 className="text-2xl font-bold text-white">Login Admin</h2>
-            <p className="text-green-200 mt-1 text-sm">Kelurahan Kedamin Hilir</p>
+            <p className="text-green-200 mt-1 text-sm">Kelurahan Putussibau Kota</p>
           </div>
           
           <div className="p-8">
@@ -105,7 +105,7 @@ export default function LoginPage() {
       <footer className="bg-[#f4f7f9] border-t border-gray-200 py-6 px-4 md:px-12 mt-auto">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-sm">
           <div className="mb-4 md:mb-0 text-center md:text-left">
-            <p className="font-bold text-gray-800 mb-1">KELURAHAN KEDAMIN HILIR</p>
+            <p className="font-bold text-gray-800 mb-1">KELURAHAN PUTUSSIBAU KOTA</p>
             <p className="text-gray-600">© 2026 Pemerintah Kabupaten Kapuas Hulu. Hak Cipta Dilindungi.</p>
           </div>
           <div className="flex space-x-6 text-gray-600">

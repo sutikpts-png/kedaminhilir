@@ -20,7 +20,7 @@ export default async function ProfilPage() {
             <span className="text-white">Profil</span>
           </div>
           <h2 className="text-3xl font-extrabold">Profil Kelurahan</h2>
-          <p className="text-green-200 mt-2 text-sm">Mengenal lebih dekat sejarah, visi, misi, dan wilayah Kelurahan Kedamin Hilir.</p>
+          <p className="text-green-200 mt-2 text-sm">Mengenal lebih dekat sejarah, visi, misi, dan wilayah Kelurahan Putussibau Kota.</p>
         </div>
       </section>
 

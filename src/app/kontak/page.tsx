@@ -10,7 +10,7 @@ export default async function KontakPage() {
     .eq('id', 1)
     .single();
 
-  const kelurahan = web?.nama_kelurahan || 'Kedamin Hilir';
+  const kelurahan = web?.nama_kelurahan || 'Putussibau Kota';
   const kecKab = web?.nama_kecamatan_kabupaten || 'Kapuas Hulu';
   const queryMap = `${kelurahan} ${kecKab}`;
   let gmapsIframe = 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3952.0!2d110.42!3d-7.65!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zN8KwMzknMDAuMCJTIDExMMKwMjUnMTIuMCJF!5e0!3m2!1sid!2sid!4v1';
@@ -56,7 +56,7 @@ export default async function KontakPage() {
               <div className="text-center mb-10">
                 <h3 className="text-2xl font-bold text-green-900 mb-4">Informasi Kontak</h3>
                 <p className="text-gray-600 leading-relaxed max-w-2xl mx-auto">
-                  Pemerintah Kelurahan Kedamin Hilir senantiasa terbuka untuk komunikasi dengan warga. Silakan hubungi kami melalui kontak di bawah ini atau kunjungi kantor kami pada jam kerja.
+                  Pemerintah Kelurahan Putussibau Kota senantiasa terbuka untuk komunikasi dengan warga. Silakan hubungi kami melalui kontak di bawah ini atau kunjungi kantor kami pada jam kerja.
                 </p>
               </div>
               
@@ -69,7 +69,7 @@ export default async function KontakPage() {
                     </div>
                     <div>
                       <h4 className="font-bold text-gray-900">Alamat Kantor</h4>
-                      <p className="text-gray-600 text-sm mt-1">{web?.alamat || 'Jl. Kaliurang Km. 17, Kedamin Hilir, Pakem, Sleman 55582'}</p>
+                      <p className="text-gray-600 text-sm mt-1">{web?.alamat || 'Jl. Putussibau, Putussibau Kota, Kapuas Hulu'}</p>
                     </div>
                   </div>
                   
@@ -79,7 +79,7 @@ export default async function KontakPage() {
                     </div>
                     <div>
                       <h4 className="font-bold text-gray-900">Email</h4>
-                      <p className="text-gray-600 text-sm mt-1">{web?.email || 'kedaminhilir@slemankab.go.id'}</p>
+                      <p className="text-gray-600 text-sm mt-1">{web?.email || 'putussibauk@kapuashulukab.go.id'}</p>
                     </div>
                   </div>
                 </div>

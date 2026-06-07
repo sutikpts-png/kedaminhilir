@@ -22,7 +22,7 @@ export default async function LayananPage() {
             <span className="text-white">Layanan</span>
           </div>
           <h2 className="text-3xl font-extrabold">Layanan Masyarakat</h2>
-          <p className="text-green-200 mt-2 text-sm">Informasi persyaratan dan prosedur layanan administrasi di Kelurahan Kedamin Hilir.</p>
+          <p className="text-green-200 mt-2 text-sm">Informasi persyaratan dan prosedur layanan administrasi di Kelurahan Putussibau Kota.</p>
         </div>
       </section>
 

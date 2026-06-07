@@ -79,7 +79,7 @@ export default async function Home() {
       <section className="max-w-7xl mx-auto px-4 py-16">
         <div className="text-center max-w-xl mx-auto mb-12">
           <h3 className="text-2xl font-bold text-green-900">Galeri Kelurahan</h3>
-          <p className="text-gray-500 text-sm mt-2">Dokumentasi kegiatan dan potensi Kelurahan Kedamin Hilir.</p>
+          <p className="text-gray-500 text-sm mt-2">Dokumentasi kegiatan dan potensi Kelurahan Putussibau Kota.</p>
           <div className="w-16 h-1 bg-yellow-400 mx-auto mt-4 rounded-full"></div>
         </div>
         
@@ -126,7 +126,7 @@ export default async function Home() {
       <section className="max-w-7xl mx-auto px-4 py-16 bg-white">
         <div className="text-center max-w-xl mx-auto mb-12">
           <h3 className="text-2xl font-bold text-green-900">Potensi Kelurahan</h3>
-          <p className="text-gray-500 text-sm mt-2">Kekayaan alam, budaya, dan ekonomi yang menjadi keunggulan Kelurahan Kedamin Hilir.</p>
+          <p className="text-gray-500 text-sm mt-2">Kekayaan alam, budaya, dan ekonomi yang menjadi keunggulan Kelurahan Putussibau Kota.</p>
           <div className="w-16 h-1 bg-yellow-400 mx-auto mt-4 rounded-full"></div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
