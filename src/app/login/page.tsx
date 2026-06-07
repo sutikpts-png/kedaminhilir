@@ -109,9 +109,7 @@ export default function LoginPage() {
             <p className="text-gray-600">© 2026 Pemerintah Kabupaten Kapuas Hulu. Hak Cipta Dilindungi.</p>
           </div>
           <div className="flex space-x-6 text-gray-600">
-            <Link href="#" className="hover:text-gray-900 underline decoration-gray-400 underline-offset-2">Kebijakan Privasi</Link>
-            <Link href="#" className="hover:text-gray-900 underline decoration-gray-400 underline-offset-2">Syarat & Ketentuan</Link>
-            <Link href="#" className="hover:text-gray-900 underline decoration-gray-400 underline-offset-2">Bantuan</Link>
+            <p>dikembangkan Dinas Komunikasi, Informatika dan Statistik Kabupaten Kapuas Hulu</p>
           </div>
         </div>
       </footer>
