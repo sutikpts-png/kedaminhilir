@@ -62,13 +62,13 @@ export default function AdminBerita() {
                 berita.map((item) => (
                   <tr key={item.id} className="border-b border-gray-100 hover:bg-gray-50">
                     <td className="p-4">
-                      <div className="w-14 h-14 rounded-lg overflow-hidden bg-gray-100 flex items-center justify-center flex-shrink-0">
+                      <div className="w-16 h-16 rounded-lg overflow-hidden bg-gray-100 flex items-center justify-center flex-shrink-0 border border-gray-200">
                         {item.gambar_url ? (
                           <Image
                             src={item.gambar_url}
                             alt={item.judul}
-                            width={56}
-                            height={56}
+                            width={64}
+                            height={64}
                             className="object-cover w-full h-full"
                           />
                         ) : (
